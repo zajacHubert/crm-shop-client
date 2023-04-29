@@ -2,21 +2,16 @@ import styled from 'styled-components';
 
 export const StyledHeader = styled.header`
   margin-left: 240px;
+  background-color: ${({ theme }) => theme.lightGray};
 `;
 
 export const StyledContainerHeader = styled.div`
-  padding: 44px 32px;
+  max-width: 1500px;
+  margin: 0 50px;
+  padding: 40px 0;
 
-  @media (max-width: 1600px) {
+  @media (max-width: 1500px) {
     margin: 0 30px;
-  }
-
-  @media (max-width: 768px) {
-    margin: 0 20px;
-  }
-
-  @media (max-width: 600px) {
-    margin: 0 10px;
   }
 `;
 

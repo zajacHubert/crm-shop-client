@@ -2,7 +2,7 @@ import Head from 'next/head';
 import { FC } from 'react';
 import Sidebar from './Sidebar';
 import Header from './Header';
-import { StyledMain } from './Layout.css';
+import { StyledMain, StyledSection } from './Layout.css';
 
 interface LayoutProps {
   title?: string;
@@ -19,7 +19,9 @@ const Layout: FC<LayoutProps> = ({ title, description, children }) => {
       </Head>
       <Sidebar />
       <Header />
-      <StyledMain>{children}</StyledMain>
+      <StyledMain>
+        <StyledSection>{children}</StyledSection>
+      </StyledMain>
     </>
   );
 };

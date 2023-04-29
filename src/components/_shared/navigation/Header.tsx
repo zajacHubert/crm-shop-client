@@ -11,7 +11,7 @@ import {
   StyledPName,
   StyledPRole,
   StyledTitle,
-} from '../Header.css';
+} from './Header.css';
 
 const Header: FC = () => {
   const router = useRouter();
