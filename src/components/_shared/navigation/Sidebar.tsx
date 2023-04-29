@@ -1,22 +1,25 @@
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChartSimple,
+  faCartShopping,
+  faUser,
+  faArrowRightFromBracket,
+} from '@fortawesome/free-solid-svg-icons';
 import {
   StyledAside,
   StyledBoxIcon,
   StyledBoxLogo,
   StyledBoxMenuItem,
+  StyledBoxUser,
+  StyledBtnLogout,
   StyledListMenu,
+  StyledPName,
   StyledPNavItem,
   StyledTitleLogo,
 } from './Sidebar.css';
-import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faHouse,
-  faChartSimple,
-  faCartShopping,
-  faUser,
-} from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/router';
 
 const Sidebar: FC = () => {
   const router = useRouter();
@@ -76,6 +79,14 @@ const Sidebar: FC = () => {
           </li>
         </StyledListMenu>
       </nav>
+      <StyledBoxUser>
+        <StyledPName>Lucjan Lucjanowy</StyledPName>
+        <StyledBoxIcon>
+          <StyledBtnLogout>
+            <FontAwesomeIcon icon={faArrowRightFromBracket} />
+          </StyledBtnLogout>
+        </StyledBoxIcon>
+      </StyledBoxUser>
     </StyledAside>
   );
 };
