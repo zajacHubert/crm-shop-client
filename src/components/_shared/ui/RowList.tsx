@@ -1,5 +1,4 @@
 import { StyledRow } from './RowList.css';
-import SearchInput from './SearchInput';
 import ButtonAdd from './ButtonAdd';
 import { FC } from 'react';
 
@@ -11,7 +10,6 @@ interface RowListProps {
 const RowList: FC<RowListProps> = ({ btnText, onClick }) => {
   return (
     <StyledRow>
-      <SearchInput />
       <ButtonAdd onClick={onClick}>{btnText}</ButtonAdd>
     </StyledRow>
   );

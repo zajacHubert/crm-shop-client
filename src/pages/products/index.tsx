@@ -1,5 +1,6 @@
 import Layout from '@/components/_shared/navigation/Layout';
 import RowList from '@/components/_shared/ui/RowList';
+import _ from 'lodash';
 import {
   StyledBoxBtns,
   StyledBtnArrow,
@@ -22,27 +23,69 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
 import { useFetchProductsQuery } from '@/store/apis/productApi';
+import { useEffect, useState, ChangeEvent } from 'react';
+import { Product } from '@/types/product';
+import Pagination from '@/components/_shared/ui/Pagination';
+import Select from '@/components/_shared/ui/Select';
+import { updateSortParams } from '@/utils/updateSortParams';
 
 const ProductsPage: NextPage = () => {
   const router = useRouter();
 
-  const { data: products } = useFetchProductsQuery({ page: 1 });
-
   const sortParam = router.query.sort;
   const pageParam = Number(router.query.page);
   const searchParam = router.query.search as string;
+  const categoryParam = router.query.product_category as string;
   const wayParam: string = router.query.way ? String(router.query.way) : '';
 
-  const updateSortParams = (value: string) => {
-    if (router.query.sort === value) {
-      router.query.way = wayParam === 'asc' ? 'desc' : 'asc';
-    } else {
-      router.query.way = 'asc';
-    }
+  const [category, setCategory] = useState<string>(categoryParam ?? '');
 
-    router.query.sort = value;
-    router.push(router);
+  const {
+    data: products,
+    isLoading,
+    isSuccess,
+    isFetching,
+    refetch,
+  } = useFetchProductsQuery({
+    page: pageParam,
+    product_category: categoryParam ?? '',
+  });
+  const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
+  console.log(products?.data);
+
+  useEffect(() => {
+    if (!isLoading || isSuccess) {
+      if (sortParam) {
+        const way = wayParam === 'asc' ? 'asc' : 'desc';
+        setSortedProducts(_.orderBy(products?.data!, [String(sortParam)], way));
+      } else {
+        setSortedProducts(products?.data!);
+      }
+    }
+  }, [isLoading, isSuccess, sortParam, wayParam, searchParam, products?.data!]);
+
+  const chooseCategory = (value: string) => {
+    setCategory(value);
+    router.query.page = String(1);
+    if (value) {
+      router.query.product_category = value;
+      router.push(router);
+      refetch();
+    } else {
+      delete router.query.product_category;
+      router.push(router);
+      refetch();
+    }
   };
+
+  if (isLoading || isFetching) {
+    return (
+      <Layout>
+        <p>Loading...</p>
+      </Layout>
+    );
+  }
+
   return (
     <Layout>
       <RowList btnText='Add new product' onClick={() => console.log('ok')} />
@@ -53,9 +96,11 @@ const ProductsPage: NextPage = () => {
             <StyledTh>
               Product name
               <StyledBtnArrow
-                color={sortParam === 'name' ? '#fff' : '#aaa'}
-                wayUp={sortParam === 'name' && wayParam === 'asc'}
-                onClick={() => updateSortParams('name')}
+                color={sortParam === 'product_name' ? '#fff' : '#aaa'}
+                wayUp={sortParam === 'product_name' && wayParam === 'asc'}
+                onClick={() =>
+                  updateSortParams(router, 'product_name', wayParam)
+                }
               >
                 <FontAwesomeIcon icon={faArrowDown} />
               </StyledBtnArrow>
@@ -63,9 +108,11 @@ const ProductsPage: NextPage = () => {
             <StyledTh>
               Category
               <StyledBtnArrow
-                color={sortParam === 'category' ? '#fff' : '#aaa'}
-                wayUp={sortParam === 'category' && wayParam === 'asc'}
-                onClick={() => updateSortParams('category')}
+                color={sortParam === 'product_category' ? '#fff' : '#aaa'}
+                wayUp={sortParam === 'product_category' && wayParam === 'asc'}
+                onClick={() =>
+                  updateSortParams(router, 'product_category', wayParam)
+                }
               >
                 <FontAwesomeIcon icon={faArrowDown} />
               </StyledBtnArrow>
@@ -73,9 +120,11 @@ const ProductsPage: NextPage = () => {
             <StyledTh>
               Price
               <StyledBtnArrow
-                color={sortParam === 'price' ? '#fff' : '#aaa'}
-                wayUp={sortParam === 'price' && wayParam === 'asc'}
-                onClick={() => updateSortParams('price')}
+                color={sortParam === 'product_price' ? '#fff' : '#aaa'}
+                wayUp={sortParam === 'product_price' && wayParam === 'asc'}
+                onClick={() =>
+                  updateSortParams(router, 'product_price', wayParam)
+                }
               >
                 <FontAwesomeIcon icon={faArrowDown} />
               </StyledBtnArrow>
@@ -84,15 +133,15 @@ const ProductsPage: NextPage = () => {
           </StyledTr>
         </StyledThead>
         <StyledTbody>
-          {!products?.data.length && (
+          {!sortedProducts.length && !isLoading && (
             <StyledTr>
               <StyledTdEmpty>No products</StyledTdEmpty>
             </StyledTr>
           )}
-          {Boolean(products?.data.length) &&
-            products?.data.map((product, i) => (
+          {Boolean(sortedProducts.length && !isLoading) &&
+            sortedProducts?.map((product, i) => (
               <StyledTr key={product.id}>
-                <StyledTd>{i + 1}</StyledTd>
+                <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
                 <StyledTd>{product.product_name}</StyledTd>
                 <StyledTd>{product.product_category}</StyledTd>
                 <StyledTd>{product.product_price}</StyledTd>
@@ -120,6 +169,16 @@ const ProductsPage: NextPage = () => {
             ))}
         </StyledTbody>
       </StyledTable>
+      <Pagination listLength={products?.total! ?? 1} />
+      <Select
+        options={['bargain', 'sale', 'newest', 'regular']}
+        title='All categories'
+        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+          chooseCategory(e.target.value)
+        }
+        align='right'
+        value={category}
+      />
     </Layout>
   );
 };

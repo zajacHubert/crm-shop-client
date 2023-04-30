@@ -33,22 +33,18 @@ const Sidebar: FC = () => {
       <nav>
         <StyledListMenu>
           <li>
-            <Link href='/products'>
-              <StyledBoxMenuItem
-                isActive={router.pathname.includes('/products')}
-                onClick={() => router.push('/products?page=1')}
-              >
-                <StyledBoxIcon isActive={router.pathname.includes('/products')}>
-                  <FontAwesomeIcon icon={faChartSimple} />
-                </StyledBoxIcon>
+            <StyledBoxMenuItem
+              isActive={router.pathname.includes('/products')}
+              onClick={() => router.push('/products?page=1')}
+            >
+              <StyledBoxIcon isActive={router.pathname.includes('/products')}>
+                <FontAwesomeIcon icon={faChartSimple} />
+              </StyledBoxIcon>
 
-                <StyledPNavItem
-                  isActive={router.pathname.includes('/products')}
-                >
-                  Products
-                </StyledPNavItem>
-              </StyledBoxMenuItem>
-            </Link>
+              <StyledPNavItem isActive={router.pathname.includes('/products')}>
+                Products
+              </StyledPNavItem>
+            </StyledBoxMenuItem>
           </li>
           <li>
             <StyledBoxMenuItem

@@ -24,6 +24,7 @@ export const StyledTh = styled.th`
 export const StyledTbody = styled.tbody``;
 
 export const StyledTd = styled.td`
+  text-transform: capitalize;
   font-size: 20px;
   padding: 10px;
 `;

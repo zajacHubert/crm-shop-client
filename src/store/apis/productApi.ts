@@ -17,13 +17,13 @@ export const productsApi = createApi({
     return {
       fetchProducts: builder.query<
         GetProductsResponse,
-        { page: number; category?: string }
+        { page: number; product_category?: string }
       >({
         query: (arg) => {
-          const { page, category } = arg;
+          const { page, product_category } = arg;
           return {
             url: '/',
-            params: { page, category },
+            params: { page, product_category },
           };
         },
         providesTags: (result) =>

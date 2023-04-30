@@ -11,6 +11,7 @@ export interface GetProductsResponse {
   data: Product[];
   per_page: number;
   last_page: number;
+  total: number;
 }
 
 export interface FormAddProductValues {
