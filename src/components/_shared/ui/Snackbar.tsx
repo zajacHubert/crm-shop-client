@@ -18,22 +18,21 @@ const Snackbar: FC = () => {
 
   let timer: ReturnType<typeof setTimeout>;
   const handleClose = () => {
+    clearTimeout(timer);
     timer = setTimeout(() => {
       dispatch(closeSnackbar());
-    }, 3000);
+    }, 2000);
   };
 
   useEffect(() => {
     if (isOpen) {
       handleClose();
     }
-
-    return clearTimeout(timer);
-  }, [isOpen]);
+  }, [isOpen, dispatch]);
 
   return (
-    <StyledContainerSnackbar success={success}>
-      <StyledPMessage>Product added!</StyledPMessage>
+    <StyledContainerSnackbar success={success} isOpen={isOpen}>
+      <StyledPMessage>{message}</StyledPMessage>
       <StyledBtnIcon onClick={() => dispatch(closeSnackbar())}>
         <FontAwesomeIcon icon={faXmark} />
       </StyledBtnIcon>

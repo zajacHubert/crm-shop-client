@@ -1,18 +1,59 @@
-import { StyledRow } from './RowProductsList.css';
+import {
+  StyledBoxText,
+  StyledBtnOrder,
+  StyledContainerOrder,
+  StyledPOrderElement,
+  StyledRow,
+  StyledSpan,
+} from './RowProductsList.css';
 import ButtonAdd from '../_shared/ui/ButtonAdd';
 import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { useRouter } from 'next/router';
 
-interface RowListProps {
-  btnText: string;
-  onClick: () => void;
-}
-
-const RowList: FC<RowListProps> = ({ btnText, onClick }) => {
+const RowListProduct: FC = () => {
+  const router = useRouter();
+  const orderedProduts = useSelector(
+    (state: RootState) => state.order.orderedProducts
+  );
+  const orderValue = orderedProduts.length
+    ? orderedProduts.reduce(
+        (prev, curr) => prev + Number(curr.product_price),
+        0
+      )
+    : 0;
   return (
     <StyledRow>
-      <ButtonAdd onClick={onClick}>{btnText}</ButtonAdd>
+      <StyledContainerOrder>
+        {orderedProduts.length ? (
+          <>
+            <StyledBoxText>
+              <StyledPOrderElement>
+                Ordered products:{' '}
+                <StyledSpan>{orderedProduts.length}</StyledSpan>
+              </StyledPOrderElement>
+              <StyledPOrderElement>
+                Order value: <StyledSpan>{orderValue.toFixed(2)}</StyledSpan>
+              </StyledPOrderElement>
+            </StyledBoxText>
+            <StyledBtnOrder onClick={() => router.push('/orders/new')}>
+              Go to order
+            </StyledBtnOrder>
+          </>
+        ) : (
+          <StyledPOrderElement>No ordered products</StyledPOrderElement>
+        )}
+      </StyledContainerOrder>
+      <ButtonAdd
+        onClick={() => {
+          console.log('ok');
+        }}
+      >
+        Add product
+      </ButtonAdd>
     </StyledRow>
   );
 };
 
-export default RowList;
+export default RowListProduct;

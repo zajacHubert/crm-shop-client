@@ -1,5 +1,5 @@
 import Layout from '@/components/_shared/navigation/Layout';
-import RowList from '@/components/products/RowListProducts';
+import RowListProduct from '@/components/products/RowListProducts';
 import _ from 'lodash';
 import {
   StyledBoxBtns,
@@ -37,6 +37,13 @@ import { RootState } from '@/store';
 import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import { openPopup, setId } from '@/store/slices/popupSlice';
 import Snackbar from '@/components/_shared/ui/Snackbar';
+import {
+  closeSnackbar,
+  openSnackBar,
+  setMessage,
+  setSuccess,
+} from '@/store/slices/snackbarSlice';
+import { addProductToOrder } from '@/store/slices/orderSlice';
 
 const ProductsPage: NextPage = () => {
   const router = useRouter();
@@ -98,7 +105,13 @@ const ProductsPage: NextPage = () => {
     dispatch(openPopup());
   };
 
-  const addProductToOrder = (product: Product) => {};
+  const addProduct = (product: Product) => {
+    dispatch(closeSnackbar());
+    dispatch(setSuccess(true));
+    dispatch(setMessage('Product added to order!'));
+    dispatch(openSnackBar());
+    dispatch(addProductToOrder(product));
+  };
 
   if (isLoading || isFetching) {
     return (
@@ -111,10 +124,10 @@ const ProductsPage: NextPage = () => {
   return (
     <>
       {isPopupOpen && <PopupConfirmDelete deleteFunction={deleteFunction} />}
-      {!isSnackBarOpen && <Snackbar />}
+      {isSnackBarOpen && <Snackbar />}
 
       <Layout>
-        <RowList btnText='Add new product' onClick={() => console.log('ok')} />
+        <RowListProduct />
         <StyledTable>
           <StyledThead>
             <StyledTr>
@@ -188,7 +201,9 @@ const ProductsPage: NextPage = () => {
                       <StyledBtnIcon onClick={() => removeProduct(product.id)}>
                         <FontAwesomeIcon icon={faTrash} />
                       </StyledBtnIcon>
-                      <StyledBtnBuy>Buy</StyledBtnBuy>
+                      <StyledBtnBuy onClick={() => addProduct(product)}>
+                        Buy
+                      </StyledBtnBuy>
                     </StyledBoxBtns>
                   </StyledTd>
                 </StyledTr>

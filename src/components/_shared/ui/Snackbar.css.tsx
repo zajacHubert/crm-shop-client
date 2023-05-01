@@ -1,18 +1,19 @@
 import styled, { keyframes } from 'styled-components';
 
-const fadein = keyframes`
-    from {
-      bottom: -100px;
-    
-    }
-    to {
-      bottom: 80px;
-    }
-`;
-
 interface StyledContainerSnackbarProps {
   success: boolean;
+  isOpen: boolean;
 }
+
+const fadeIn = keyframes`
+from {
+  bottom: 0;
+}
+to {
+  bottom: 80px;
+}
+
+`;
 
 export const StyledContainerSnackbar = styled.div<StyledContainerSnackbarProps>`
   display: flex;
@@ -22,9 +23,9 @@ export const StyledContainerSnackbar = styled.div<StyledContainerSnackbarProps>`
   z-index: 100;
   bottom: 80px;
   left: 300px;
-  animation: ${fadein} 0.5s;
   background-color: ${({ success }) => (success ? '#4e9a51' : '#d84646')};
   padding: 8px 20px;
+  animation: ${fadeIn} 0.2s ease-out;
 `;
 
 export const StyledPMessage = styled.p`
