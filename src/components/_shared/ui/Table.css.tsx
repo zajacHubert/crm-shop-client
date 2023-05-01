@@ -31,12 +31,13 @@ export const StyledTd = styled.td`
 
 export const StyledBoxBtns = styled.div`
   display: flex;
+  justify-content: center;
   gap: 20px;
 `;
 
 export const StyledBtnIcon = styled.button`
   color: #343232;
-  transition: 0.3s;
+  transition: 0.2s;
   font-size: 20px;
   width: 22px;
   height: 22px;
@@ -65,4 +66,21 @@ export const StyledTdEmpty = styled.td.attrs(() => ({
 }))`
   padding: 10px;
   font-weight: 700;
+`;
+
+export const StyledBtnBuy = styled.button`
+  min-width: 100px;
+  height: 26px;
+  background-color: ${({ theme }) => theme.gray};
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: 0.3s;
+  border: 1px solid black;
+  margin-left: 8px;
+
+  &:hover {
+    background-color: #cdcdcd;
+  }
 `;

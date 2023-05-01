@@ -4,6 +4,7 @@ import _ from 'lodash';
 import {
   StyledBoxBtns,
   StyledBtnArrow,
+  StyledBtnBuy,
   StyledBtnIcon,
   StyledTable,
   StyledTbody,
@@ -22,15 +23,26 @@ import {
   faEye,
 } from '@fortawesome/free-solid-svg-icons';
 import { useRouter } from 'next/router';
-import { useFetchProductsQuery } from '@/store/apis/productApi';
+import {
+  useDeleteProductMutation,
+  useFetchProductsQuery,
+} from '@/store/apis/productApi';
 import { useEffect, useState, ChangeEvent } from 'react';
 import { Product } from '@/types/product';
 import Pagination from '@/components/_shared/ui/Pagination';
 import Select from '@/components/_shared/ui/Select';
 import { updateSortParams } from '@/utils/updateSortParams';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
+import { openPopup, setId } from '@/store/slices/popupSlice';
 
 const ProductsPage: NextPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
+  const isPopupOpen = useSelector((state: RootState) => state.popup.isOpen);
+
+  const [deleteFunction, {}] = useDeleteProductMutation();
 
   const sortParam = router.query.sort;
   const pageParam = Number(router.query.page);
@@ -51,7 +63,6 @@ const ProductsPage: NextPage = () => {
     product_category: categoryParam ?? '',
   });
   const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
-  console.log(products?.data);
 
   useEffect(() => {
     if (!isLoading || isSuccess) {
@@ -78,6 +89,11 @@ const ProductsPage: NextPage = () => {
     }
   };
 
+  const removeProduct = (id: string) => {
+    dispatch(setId(id));
+    dispatch(openPopup());
+  };
+
   if (isLoading || isFetching) {
     return (
       <Layout>
@@ -87,99 +103,102 @@ const ProductsPage: NextPage = () => {
   }
 
   return (
-    <Layout>
-      <RowList btnText='Add new product' onClick={() => console.log('ok')} />
-      <StyledTable>
-        <StyledThead>
-          <StyledTr>
-            <StyledTh>Product number </StyledTh>
-            <StyledTh>
-              Product name
-              <StyledBtnArrow
-                color={sortParam === 'product_name' ? '#fff' : '#aaa'}
-                wayUp={sortParam === 'product_name' && wayParam === 'asc'}
-                onClick={() =>
-                  updateSortParams(router, 'product_name', wayParam)
-                }
-              >
-                <FontAwesomeIcon icon={faArrowDown} />
-              </StyledBtnArrow>
-            </StyledTh>
-            <StyledTh>
-              Category
-              <StyledBtnArrow
-                color={sortParam === 'product_category' ? '#fff' : '#aaa'}
-                wayUp={sortParam === 'product_category' && wayParam === 'asc'}
-                onClick={() =>
-                  updateSortParams(router, 'product_category', wayParam)
-                }
-              >
-                <FontAwesomeIcon icon={faArrowDown} />
-              </StyledBtnArrow>
-            </StyledTh>
-            <StyledTh>
-              Price
-              <StyledBtnArrow
-                color={sortParam === 'product_price' ? '#fff' : '#aaa'}
-                wayUp={sortParam === 'product_price' && wayParam === 'asc'}
-                onClick={() =>
-                  updateSortParams(router, 'product_price', wayParam)
-                }
-              >
-                <FontAwesomeIcon icon={faArrowDown} />
-              </StyledBtnArrow>
-            </StyledTh>
-            <StyledTh>Actions</StyledTh>
-          </StyledTr>
-        </StyledThead>
-        <StyledTbody>
-          {!sortedProducts.length && !isLoading && (
+    <>
+      {isPopupOpen && <PopupConfirmDelete deleteFunction={deleteFunction} />}
+      <Layout>
+        <RowList btnText='Add new product' onClick={() => console.log('ok')} />
+        <StyledTable>
+          <StyledThead>
             <StyledTr>
-              <StyledTdEmpty>No products</StyledTdEmpty>
+              <StyledTh>Product number </StyledTh>
+              <StyledTh>
+                Product name
+                <StyledBtnArrow
+                  color={sortParam === 'product_name' ? '#fff' : '#aaa'}
+                  wayUp={sortParam === 'product_name' && wayParam === 'asc'}
+                  onClick={() =>
+                    updateSortParams(router, 'product_name', wayParam)
+                  }
+                >
+                  <FontAwesomeIcon icon={faArrowDown} />
+                </StyledBtnArrow>
+              </StyledTh>
+              <StyledTh>
+                Category
+                <StyledBtnArrow
+                  color={sortParam === 'product_category' ? '#fff' : '#aaa'}
+                  wayUp={sortParam === 'product_category' && wayParam === 'asc'}
+                  onClick={() =>
+                    updateSortParams(router, 'product_category', wayParam)
+                  }
+                >
+                  <FontAwesomeIcon icon={faArrowDown} />
+                </StyledBtnArrow>
+              </StyledTh>
+              <StyledTh>
+                Price
+                <StyledBtnArrow
+                  color={sortParam === 'product_price' ? '#fff' : '#aaa'}
+                  wayUp={sortParam === 'product_price' && wayParam === 'asc'}
+                  onClick={() =>
+                    updateSortParams(router, 'product_price', wayParam)
+                  }
+                >
+                  <FontAwesomeIcon icon={faArrowDown} />
+                </StyledBtnArrow>
+              </StyledTh>
+              <StyledTh>Actions</StyledTh>
             </StyledTr>
-          )}
-          {Boolean(sortedProducts.length && !isLoading) &&
-            sortedProducts?.map((product, i) => (
-              <StyledTr key={product.id}>
-                <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
-                <StyledTd>{product.product_name}</StyledTd>
-                <StyledTd>{product.product_category}</StyledTd>
-                <StyledTd>{product.product_price}</StyledTd>
-                <StyledTd>
-                  <StyledBoxBtns>
-                    <StyledBtnIcon
-                      onClick={() => router.push(`/products/${product.id}`)}
-                    >
-                      <FontAwesomeIcon icon={faEye} />
-                    </StyledBtnIcon>
-                    <StyledBtnIcon
-                      onClick={() =>
-                        router.push(`/products/${product.id}/edit`)
-                      }
-                    >
-                      <FontAwesomeIcon icon={faPen} />
-                    </StyledBtnIcon>
-                    {/* <StyledBtnIcon onClick={() => setElementToConfirm(product)}>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </StyledBtnIcon> */}
-                    <StyledBtnIcon></StyledBtnIcon>
-                  </StyledBoxBtns>
-                </StyledTd>
+          </StyledThead>
+          <StyledTbody>
+            {!sortedProducts.length && !isLoading && (
+              <StyledTr>
+                <StyledTdEmpty>No products</StyledTdEmpty>
               </StyledTr>
-            ))}
-        </StyledTbody>
-      </StyledTable>
-      <Pagination listLength={products?.total! ?? 1} />
-      <Select
-        options={['bargain', 'sale', 'newest', 'regular']}
-        title='All categories'
-        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-          chooseCategory(e.target.value)
-        }
-        align='right'
-        value={category}
-      />
-    </Layout>
+            )}
+            {Boolean(sortedProducts.length && !isLoading) &&
+              sortedProducts?.map((product, i) => (
+                <StyledTr key={product.id}>
+                  <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
+                  <StyledTd>{product.product_name}</StyledTd>
+                  <StyledTd>{product.product_category}</StyledTd>
+                  <StyledTd>{product.product_price}</StyledTd>
+                  <StyledTd>
+                    <StyledBoxBtns>
+                      <StyledBtnIcon
+                        onClick={() => router.push(`/products/${product.id}`)}
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                      </StyledBtnIcon>
+                      <StyledBtnIcon
+                        onClick={() =>
+                          router.push(`/products/${product.id}/edit`)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faPen} />
+                      </StyledBtnIcon>
+                      <StyledBtnIcon onClick={() => removeProduct(product.id)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </StyledBtnIcon>
+                      <StyledBtnBuy>Buy</StyledBtnBuy>
+                    </StyledBoxBtns>
+                  </StyledTd>
+                </StyledTr>
+              ))}
+          </StyledTbody>
+        </StyledTable>
+        <Pagination listLength={products?.total! ?? 1} />
+        <Select
+          options={['bargain', 'sale', 'newest', 'regular']}
+          title='All categories'
+          onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+            chooseCategory(e.target.value)
+          }
+          align='right'
+          value={category}
+        />
+      </Layout>
+    </>
   );
 };
 
