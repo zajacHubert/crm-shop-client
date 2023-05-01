@@ -36,11 +36,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import { openPopup, setId } from '@/store/slices/popupSlice';
+import Snackbar from '@/components/_shared/ui/Snackbar';
 
 const ProductsPage: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const isPopupOpen = useSelector((state: RootState) => state.popup.isOpen);
+  const isSnackBarOpen = useSelector(
+    (state: RootState) => state.snackbar.isOpen
+  );
 
   const [deleteFunction, {}] = useDeleteProductMutation();
 
@@ -105,6 +109,8 @@ const ProductsPage: NextPage = () => {
   return (
     <>
       {isPopupOpen && <PopupConfirmDelete deleteFunction={deleteFunction} />}
+      {!isSnackBarOpen && <Snackbar />}
+
       <Layout>
         <RowList btnText='Add new product' onClick={() => console.log('ok')} />
         <StyledTable>

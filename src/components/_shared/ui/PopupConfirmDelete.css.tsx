@@ -21,8 +21,8 @@ export const StyledTextConfirm = styled.p`
   justify-content: center;
   gap: 20px;
   color: ${({ theme }) => theme.primary};
-  border: 4px solid ${({ theme }) => theme.primary};
-  background-color: ${({ theme }) => theme.secondary};
+  font-size: 20px;
+  font-weight: 600;
 `;
 
 export const StyledBoxBtns = styled.div`
@@ -37,12 +37,11 @@ export const StyledBtnCancel = styled.button`
   background-color: ${({ theme }) => theme.primary};
   color: rgb(255, 255, 255);
   font-size: 16px;
-  font-family: Orbitron, sans-serif;
   letter-spacing: 1px;
   transition: all 0.3s ease 0s;
 
   &:hover {
-    opacity: 0.9;
+    background-color: #ababab;
   }
 `;
 
@@ -52,11 +51,10 @@ export const StyledBtnConfirm = styled.button`
   background-color: ${(props) => props.theme.secondary};
   color: rgb(255, 255, 255);
   font-size: 16px;
-  font-family: Orbitron, sans-serif;
   letter-spacing: 1px;
   transition: all 0.3s ease 0s;
 
   &:hover {
-    opacity: 0.9;
+    background-color: #ababab;
   }
 `;

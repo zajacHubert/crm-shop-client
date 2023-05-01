@@ -5,6 +5,7 @@ import {
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { productsApi } from './apis/productApi';
 import popupSlice from './slices/popupSlice';
+import snackbarSlice from './slices/snackbarSlice';
 
 const nonSerializableMiddleware = createSerializableStateInvariantMiddleware({
   isSerializable: (value) => typeof value !== 'function',
@@ -13,6 +14,7 @@ const nonSerializableMiddleware = createSerializableStateInvariantMiddleware({
 export const store = configureStore({
   reducer: {
     popup: popupSlice,
+    snackbar: snackbarSlice,
     [productsApi.reducerPath]: productsApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
