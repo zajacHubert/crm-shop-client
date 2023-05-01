@@ -1,5 +1,5 @@
-import { StyledRow } from './RowList.css';
-import ButtonAdd from './ButtonAdd';
+import { StyledRow } from './RowProductsList.css';
+import ButtonAdd from '../_shared/ui/ButtonAdd';
 import { FC } from 'react';
 
 interface RowListProps {

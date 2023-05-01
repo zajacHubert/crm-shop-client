@@ -1,5 +1,5 @@
 import Layout from '@/components/_shared/navigation/Layout';
-import RowList from '@/components/_shared/ui/RowList';
+import RowList from '@/components/products/RowListProducts';
 import _ from 'lodash';
 import {
   StyledBoxBtns,
@@ -97,6 +97,8 @@ const ProductsPage: NextPage = () => {
     dispatch(setId(id));
     dispatch(openPopup());
   };
+
+  const addProductToOrder = (product: Product) => {};
 
   if (isLoading || isFetching) {
     return (
