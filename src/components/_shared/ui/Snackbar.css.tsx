@@ -23,7 +23,8 @@ export const StyledContainerSnackbar = styled.div<StyledContainerSnackbarProps>`
   z-index: 100;
   bottom: 80px;
   left: 300px;
-  background-color: ${({ success }) => (success ? '#4e9a51' : '#d84646')};
+  background-color: ${({ success, theme }) =>
+    success ? '#4e9a51' : theme.danger};
   padding: 8px 20px;
   animation: ${fadeIn} 0.2s ease-out;
 `;

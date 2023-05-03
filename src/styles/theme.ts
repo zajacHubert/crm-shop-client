@@ -5,4 +5,5 @@ export const theme: DefaultTheme = {
   secondary: '#676767',
   lightGray: '#f5f5f5',
   gray: '#ababab',
+  danger: '#ba000d',
 };

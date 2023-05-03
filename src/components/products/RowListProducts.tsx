@@ -45,13 +45,7 @@ const RowListProduct: FC = () => {
           <StyledPOrderElement>No ordered products</StyledPOrderElement>
         )}
       </StyledContainerOrder>
-      <ButtonAdd
-        onClick={() => {
-          console.log('ok');
-        }}
-      >
-        Add product
-      </ButtonAdd>
+      <ButtonAdd onClick={() => {}}>Add product</ButtonAdd>
     </StyledRow>
   );
 };
