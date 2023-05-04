@@ -24,3 +24,8 @@ export interface UserRefreshAuthResponse {
   jwt: string;
   user_logged: User;
 }
+
+export interface Auth {
+  jwt: string;
+  user_logged: User;
+}

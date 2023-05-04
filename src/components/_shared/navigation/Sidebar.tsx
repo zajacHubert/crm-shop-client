@@ -20,9 +20,12 @@ import {
   StyledPNavItem,
   StyledTitleLogo,
 } from './Sidebar.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const Sidebar: FC = () => {
   const router = useRouter();
+  const auth = useSelector((state: RootState) => state.user.auth);
   return (
     <StyledAside>
       <StyledBoxLogo>
@@ -76,7 +79,7 @@ const Sidebar: FC = () => {
         </StyledListMenu>
       </nav>
       <StyledBoxUser>
-        <StyledPName>Lucjan Lucjanowy</StyledPName>
+        <StyledPName>{auth?.user_logged?.name}</StyledPName>
         <StyledBoxIcon>
           <StyledBtnLogout>
             <FontAwesomeIcon icon={faArrowRightFromBracket} />

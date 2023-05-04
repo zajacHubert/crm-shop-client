@@ -12,10 +12,15 @@ import {
   StyledPRole,
   StyledTitle,
 } from './Header.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
 
 const Header: FC = () => {
   const router = useRouter();
   const title = router.pathname.split('/')[1];
+  const loggedUser = useSelector(
+    (state: RootState) => state.user.auth?.user_logged
+  );
 
   return (
     <StyledHeader>
@@ -26,8 +31,8 @@ const Header: FC = () => {
           </StyledBoxTitle>
           <StyledBoxUser>
             <StyledBoxUserInfo>
-              <StyledPName>Lucjan Lucjanowy</StyledPName>
-              <StyledPRole>Employee</StyledPRole>
+              <StyledPName>{loggedUser?.name}</StyledPName>
+              <StyledPRole>{loggedUser?.role?.role_name}</StyledPRole>
             </StyledBoxUserInfo>
             <StyledBtnLogout>Logout</StyledBtnLogout>
           </StyledBoxUser>

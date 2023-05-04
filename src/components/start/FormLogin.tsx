@@ -12,9 +12,16 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 import { FormLoginValues } from '@/types/forms';
 import { useLoginMutation } from '@/store/apis/userApi';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAuth } from '@/store/slices/userSlice';
+import { RootState } from '@/store';
+import { useRouter } from 'next/router';
 
 const FormLogin: FC = () => {
+  const router = useRouter();
   const [login, {}] = useLoginMutation();
+  const dispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.user.auth);
 
   const validationSchema = yup.object().shape({
     email: yup.string().required().email().min(4).max(50),
@@ -28,7 +35,10 @@ const FormLogin: FC = () => {
 
   const submitForm = async (values: FormLoginValues) => {
     const res = await login(values);
-    console.log(res);
+    if ('data' in res) {
+      dispatch(setAuth(res.data));
+      router.push('/home');
+    }
   };
   return (
     <StyledBoxForm>

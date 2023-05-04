@@ -45,6 +45,7 @@ export const StyledPName = styled.p`
 export const StyledPRole = styled.p`
   font-size: 18px;
   color: ${({ theme }) => theme.secondary};
+  text-transform: capitalize;
 `;
 
 export const StyledBtnLogout = styled.button`
