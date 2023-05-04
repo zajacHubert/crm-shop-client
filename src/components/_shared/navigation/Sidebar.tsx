@@ -26,7 +26,7 @@ const Sidebar: FC = () => {
   return (
     <StyledAside>
       <StyledBoxLogo>
-        <Link href='/'>
+        <Link href='/home'>
           <StyledTitleLogo>CRM Shop</StyledTitleLogo>
         </Link>
       </StyledBoxLogo>

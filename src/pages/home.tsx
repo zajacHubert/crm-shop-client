@@ -1,11 +1,11 @@
 import Layout from '@/components/_shared/navigation/Layout';
-import FormLogin from '@/components/start/FormLogin';
+import WelcomeView from '@/components/start/WelcomeView';
 import { NextPage } from 'next';
 
 const HomePage: NextPage = () => {
   return (
     <Layout>
-      <FormLogin />
+      <WelcomeView />
     </Layout>
   );
 };

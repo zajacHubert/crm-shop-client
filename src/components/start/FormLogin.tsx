@@ -1,5 +1,5 @@
 import { FC } from 'react';
-import { StyledBoxForm } from './FormLogin.css';
+import { StyledBoxForm, StyledTitleForm } from './FormLogin.css';
 import {
   StyledBoxLabelError,
   StyledBtnSubmit,
@@ -11,8 +11,11 @@ import {
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import { FormLoginValues } from '@/types/forms';
+import { useLoginMutation } from '@/store/apis/userApi';
 
 const FormLogin: FC = () => {
+  const [login, {}] = useLoginMutation();
+
   const validationSchema = yup.object().shape({
     email: yup.string().required().email().min(4).max(50),
     password: yup.string().required().min(4).max(50),
@@ -23,9 +26,13 @@ const FormLogin: FC = () => {
     password: '',
   };
 
-  const submitForm = async (values: FormLoginValues) => {};
+  const submitForm = async (values: FormLoginValues) => {
+    const res = await login(values);
+    console.log(res);
+  };
   return (
     <StyledBoxForm>
+      <StyledTitleForm>Login</StyledTitleForm>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}

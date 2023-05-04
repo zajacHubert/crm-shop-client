@@ -15,9 +15,7 @@ import {
 
 const Header: FC = () => {
   const router = useRouter();
-  const title = !router.pathname.split('/')[1]
-    ? 'Home Page'
-    : router.pathname.split('/')[1];
+  const title = router.pathname.split('/')[1];
 
   return (
     <StyledHeader>
