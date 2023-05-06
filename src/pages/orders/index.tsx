@@ -23,6 +23,7 @@ import {
   faArrowDown,
   faEye,
 } from '@fortawesome/free-solid-svg-icons';
+import { countOrderValue } from '@/utils/counteOrderValue';
 
 const OrdersPage: NextPage = () => {
   const router = useRouter();
@@ -32,13 +33,6 @@ const OrdersPage: NextPage = () => {
 
   const { data: orders, isLoading } = useFetchOrdersQuery({ page: pageParam });
 
-  const countOrderValue = (products: Product[]) => {
-    const value = products.reduce(
-      (prev, curr) => prev + Number(curr.product_price),
-      0
-    );
-    return value.toFixed(2);
-  };
   return (
     <Layout>
       <StyledTable>

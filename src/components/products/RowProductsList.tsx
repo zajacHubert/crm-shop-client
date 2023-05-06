@@ -11,6 +11,7 @@ import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { useRouter } from 'next/router';
+import { countOrderValue } from '@/utils/counteOrderValue';
 
 const RowProductsList: FC = () => {
   const router = useRouter();
@@ -18,10 +19,7 @@ const RowProductsList: FC = () => {
     (state: RootState) => state.order.orderedProducts
   );
   const orderValue = orderedProduts.length
-    ? orderedProduts.reduce(
-        (prev, curr) => prev + Number(curr.product_price),
-        0
-      )
+    ? countOrderValue(orderedProduts)
     : 0;
   return (
     <StyledRow>
@@ -34,7 +32,7 @@ const RowProductsList: FC = () => {
                 <StyledSpan>{orderedProduts.length}</StyledSpan>
               </StyledPOrderElement>
               <StyledPOrderElement>
-                Order value: <StyledSpan>{orderValue.toFixed(2)}</StyledSpan>
+                Order value: <StyledSpan>{orderValue}</StyledSpan>
               </StyledPOrderElement>
             </StyledBoxText>
             <StyledBtnOrder onClick={() => router.push('/orders/new')}>

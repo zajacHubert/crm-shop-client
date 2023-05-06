@@ -17,6 +17,7 @@ import {
 import { RootState } from '@/store';
 import { removeProductFromOrder } from '@/store/slices/orderSlice';
 import { Product } from '@/types/product';
+import { countOrderValue } from '@/utils/counteOrderValue';
 import { NextPage } from 'next';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -27,10 +28,7 @@ const NewOrderPage: NextPage = () => {
   );
 
   const orderValue = orderedProducts.length
-    ? orderedProducts.reduce(
-        (prev, curr) => prev + Number(curr.product_price),
-        0
-      )
+    ? countOrderValue(orderedProducts)
     : 0;
   const loggedUser = useSelector(
     (state: RootState) => state.user.auth?.user_logged
@@ -62,7 +60,7 @@ const NewOrderPage: NextPage = () => {
             </StyledList>
             <StyledBoxSummary>
               <StyledPSummary>Total</StyledPSummary>
-              <StyledPTotal>{orderValue.toFixed(2)}</StyledPTotal>
+              <StyledPTotal>{orderValue}</StyledPTotal>
             </StyledBoxSummary>
             <StyledBtnOrder>Order</StyledBtnOrder>
           </>
