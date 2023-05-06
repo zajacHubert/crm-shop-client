@@ -24,6 +24,7 @@ import {
   faEye,
 } from '@fortawesome/free-solid-svg-icons';
 import { countOrderValue } from '@/utils/counteOrderValue';
+import Pagination from '@/components/_shared/ui/Pagination';
 
 const OrdersPage: NextPage = () => {
   const router = useRouter();
@@ -79,6 +80,7 @@ const OrdersPage: NextPage = () => {
             ))}
         </StyledTbody>
       </StyledTable>
+      <Pagination listLength={orders?.total!}></Pagination>
     </Layout>
   );
 };

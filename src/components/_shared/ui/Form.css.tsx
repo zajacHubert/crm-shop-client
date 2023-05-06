@@ -30,7 +30,13 @@ export const StyledInput = styled.input`
   font-size: 16px;
 `;
 
-export const StyledSelect = styled.select``;
+export const StyledSelect = styled.select`
+  background-color: transparent;
+  padding: 5px;
+  outline: none;
+  cursor: pointer;
+  font-size: 14px;
+`;
 
 export const StyledPError = styled.p`
   color: ${({ theme }) => theme.danger};
@@ -39,6 +45,15 @@ export const StyledPError = styled.p`
   &::first-letter {
     text-transform: capitalize;
   }
+`;
+
+export const StyledTextArea = styled.textarea`
+  border: none;
+  outline: none;
+  border-bottom: 1px solid #000;
+  background-color: transparent;
+  min-height: 60px;
+  padding: 5px;
 `;
 
 export const StyledBtnSubmit = styled.button`

@@ -21,7 +21,7 @@ const Snackbar: FC = () => {
     clearTimeout(timer);
     timer = setTimeout(() => {
       dispatch(closeSnackbar());
-    }, 2000);
+    }, 3000);
   };
 
   useEffect(() => {

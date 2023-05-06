@@ -1,11 +1,10 @@
+import { FormAddProductValues, FormEditProductValues } from '@/types/forms';
 import {
   DeleteProductResponse,
-  FormEditProductValues,
   GetProductsResponse,
   Product,
 } from '@/types/product';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { FormAddProductValues } from '../../types/product';
 
 export const productsApi = createApi({
   reducerPath: 'apiProducts',

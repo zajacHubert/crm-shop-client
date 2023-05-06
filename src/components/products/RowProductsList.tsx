@@ -28,7 +28,7 @@ const RowProductsList: FC = () => {
           <>
             <StyledBoxText>
               <StyledPOrderElement>
-                Ordered products:{' '}
+                Ordered products:
                 <StyledSpan>{orderedProduts.length}</StyledSpan>
               </StyledPOrderElement>
               <StyledPOrderElement>
@@ -43,7 +43,9 @@ const RowProductsList: FC = () => {
           <StyledPOrderElement>No ordered products</StyledPOrderElement>
         )}
       </StyledContainerOrder>
-      <ButtonAdd onClick={() => {}}>Add product</ButtonAdd>
+      <ButtonAdd onClick={() => router.push('/products/new')}>
+        Add product
+      </ButtonAdd>
     </StyledRow>
   );
 };
