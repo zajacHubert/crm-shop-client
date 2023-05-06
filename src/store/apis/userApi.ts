@@ -1,8 +1,9 @@
-import { FormLoginValues } from '@/types/forms';
+import { FormLoginValues, FormRegisterValues } from '@/types/forms';
 import {
   UserLoginResponse,
   UserLogoutResponse,
   UserRefreshAuthResponse,
+  UserRegisterResponse,
 } from '@/types/user';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCookie } from 'cookies-next';
@@ -15,6 +16,13 @@ export const usersApi = createApi({
   tagTypes: ['User'],
   endpoints(builder) {
     return {
+      register: builder.mutation<UserRegisterResponse, FormRegisterValues>({
+        query: (formRegisterValues) => ({
+          url: '/register',
+          method: 'POST',
+          body: formRegisterValues,
+        }),
+      }),
       login: builder.mutation<UserLoginResponse, FormLoginValues>({
         query: (formLoginValues) => ({
           url: '/login',
@@ -41,5 +49,9 @@ export const usersApi = createApi({
   },
 });
 
-export const { useLoginMutation, useLogoutMutation, useRefreshAuthMutation } =
-  usersApi;
+export const {
+  useLoginMutation,
+  useRegisterMutation,
+  useLogoutMutation,
+  useRefreshAuthMutation,
+} = usersApi;

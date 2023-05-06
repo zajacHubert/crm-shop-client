@@ -48,11 +48,15 @@ const Layout: FC<LayoutProps> = ({ title, description, children }) => {
         <title>{title}</title>
         <meta name='description' content={description} />
       </Head>
-      <Sidebar />
-      <Header />
-      <StyledMain>
-        <StyledSection>{children}</StyledSection>
-      </StyledMain>
+      {auth && (
+        <>
+          <Sidebar />
+          <Header />
+          <StyledMain>
+            <StyledSection>{children}</StyledSection>
+          </StyledMain>
+        </>
+      )}
     </>
   );
 };

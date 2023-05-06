@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { useRouter } from 'next/router';
 
-const RowListProduct: FC = () => {
+const RowProductsList: FC = () => {
   const router = useRouter();
   const orderedProduts = useSelector(
     (state: RootState) => state.order.orderedProducts
@@ -50,4 +50,4 @@ const RowListProduct: FC = () => {
   );
 };
 
-export default RowListProduct;
+export default RowProductsList;

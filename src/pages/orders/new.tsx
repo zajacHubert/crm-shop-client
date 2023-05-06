@@ -11,6 +11,7 @@ import {
   StyledPProduct,
   StyledPSummary,
   StyledPTotal,
+  StyledTextNoOrder,
   StyledTitle,
 } from '@/components/orders/NewOrder.css';
 import { RootState } from '@/store';
@@ -38,28 +39,36 @@ const NewOrderPage: NextPage = () => {
   const addOrder = async () => {};
   return (
     <Layout>
-      <StyledTitle>Your Order</StyledTitle>
+      <StyledTitle>{orderedProducts.length ? 'Your Order' : ''}</StyledTitle>
       <StyledBoxOrder>
-        <StyledList>
-          {orderedProducts.map((product: Product, i: number) => (
-            <StyledListItem key={product.id}>
-              <StyledPProduct>{product.product_name}</StyledPProduct>
-              <StyledBoxPriceButton>
-                <StyledPPrice>{product.product_price}</StyledPPrice>
-                <StyledBtnRemove
-                  onClick={() => dispatch(removeProductFromOrder(product.id))}
-                >
-                  Remove
-                </StyledBtnRemove>
-              </StyledBoxPriceButton>
-            </StyledListItem>
-          ))}
-        </StyledList>
-        <StyledBoxSummary>
-          <StyledPSummary>Total</StyledPSummary>
-          <StyledPTotal>{orderValue}</StyledPTotal>
-        </StyledBoxSummary>
-        <StyledBtnOrder>Order</StyledBtnOrder>
+        {orderedProducts.length ? (
+          <>
+            <StyledList>
+              {orderedProducts.map((product: Product) => (
+                <StyledListItem key={product.id}>
+                  <StyledPProduct>{product.product_name}</StyledPProduct>
+                  <StyledBoxPriceButton>
+                    <StyledPPrice>{product.product_price}</StyledPPrice>
+                    <StyledBtnRemove
+                      onClick={() =>
+                        dispatch(removeProductFromOrder(product.id))
+                      }
+                    >
+                      Remove
+                    </StyledBtnRemove>
+                  </StyledBoxPriceButton>
+                </StyledListItem>
+              ))}
+            </StyledList>
+            <StyledBoxSummary>
+              <StyledPSummary>Total</StyledPSummary>
+              <StyledPTotal>{orderValue.toFixed(2)}</StyledPTotal>
+            </StyledBoxSummary>
+            <StyledBtnOrder>Order</StyledBtnOrder>
+          </>
+        ) : (
+          <StyledTextNoOrder>No ordered products</StyledTextNoOrder>
+        )}
       </StyledBoxOrder>
     </Layout>
   );

@@ -1,5 +1,5 @@
 import Layout from '@/components/_shared/navigation/Layout';
-import RowListProduct from '@/components/products/RowListProducts';
+import RowProductsList from '@/components/products/RowProductsList';
 import _ from 'lodash';
 import {
   StyledBoxBtns,
@@ -127,7 +127,7 @@ const ProductsPage: NextPage = () => {
       {isSnackBarOpen && <Snackbar />}
 
       <Layout>
-        <RowListProduct />
+        <RowProductsList />
         <StyledTable>
           <StyledThead>
             <StyledTr>

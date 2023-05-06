@@ -3,11 +3,7 @@ import FormLogin from '@/components/start/FormLogin';
 import { NextPage } from 'next';
 
 const HomePage: NextPage = () => {
-  return (
-    <Layout>
-      <FormLogin />
-    </Layout>
-  );
+  return <FormLogin />;
 };
 
 export default HomePage;

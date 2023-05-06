@@ -14,7 +14,7 @@ export const StyledTitleForm = styled.h2`
   font-size: 34px;
 `;
 
-export const StyledPRegister = styled.p`
+export const StyledPLogin = styled.p`
   text-align: center;
   font-size: 18px;
 `;

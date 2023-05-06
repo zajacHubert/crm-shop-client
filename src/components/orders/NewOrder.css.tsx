@@ -74,3 +74,7 @@ export const StyledBtnOrder = styled.button`
     background-color: #cdcdcd;
   }
 `;
+
+export const StyledTextNoOrder = styled.h3`
+  font-size: 26px;
+`;

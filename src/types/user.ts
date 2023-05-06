@@ -10,6 +10,10 @@ export interface User {
   orders?: Order[];
 }
 
+export interface UserRegisterResponse {
+  data: User;
+}
+
 export interface UserLoginResponse {
   jwt: string;
   user_logged: User;
