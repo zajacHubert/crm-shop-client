@@ -10,14 +10,22 @@ import {
   StyledTitleProduct,
 } from '@/components/products/SingleProductPage.css';
 import { useFetchProductQuery } from '@/store/apis/productApi';
+import { addProductToOrder } from '@/store/slices/orderSlice';
 import { NextPage } from 'next';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
 
 const SingleProductPage: NextPage = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const id = router.query.id as string;
   const { data } = useFetchProductQuery(id);
+
+  const handleBuy = () => {
+    dispatch(addProductToOrder(data!));
+    router.push('/products?page=1');
+  };
   return (
     <Layout>
       <StyledContainerProduct>
@@ -34,9 +42,8 @@ const SingleProductPage: NextPage = () => {
           <StyledPDesc>{data?.product_desc}</StyledPDesc>
           <StyledPPrice>Price: {data?.product_price}</StyledPPrice>
         </StyledBoxDesc>
-
         <StyledBoxBtns>
-          <StyledBtnBuy>Buy</StyledBtnBuy>
+          <StyledBtnBuy onClick={handleBuy}>Buy</StyledBtnBuy>
         </StyledBoxBtns>
       </StyledContainerProduct>
     </Layout>

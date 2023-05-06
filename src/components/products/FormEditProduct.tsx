@@ -1,8 +1,22 @@
 import { FC } from 'react';
-import { StyledBoxForm, StyledTitleForm } from './FormAddProduct.css';
 import { Formik } from 'formik';
 import * as yup from 'yup';
-import { FormAddProductValues } from '@/types/forms';
+import { FormEditProductValues } from '@/types/forms';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  useEditProductMutation,
+  useFetchProductQuery,
+} from '@/store/apis/productApi';
+import { RootState } from '@/store';
+import {
+  closeSnackbar,
+  openSnackBar,
+  setMessage,
+  setSuccess,
+} from '@/store/slices/snackbarSlice';
+import Snackbar from '../_shared/ui/Snackbar';
+import { StyledBoxForm, StyledTitleForm } from './FormEditProduct.css';
 import {
   StyledBoxLabelError,
   StyledBtnSubmit,
@@ -13,20 +27,17 @@ import {
   StyledSelect,
   StyledTextArea,
 } from '../_shared/ui/Form.css';
-import { useAddProductMutation } from '@/store/apis/productApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import Snackbar from '../_shared/ui/Snackbar';
-import { useRouter } from 'next/router';
 import { displaySnackBar } from '@/utils/displaySnackBar';
 
-const FormAddProduct: FC = () => {
+const FormEditProduct: FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [addProduct] = useAddProductMutation();
+  const [editProduct] = useEditProductMutation();
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen
   );
+  const id = router.query.id as string;
+  const { data } = useFetchProductQuery(id);
 
   const validationSchema = yup.object().shape({
     product_name: yup.string().required().min(4).max(50),
@@ -46,22 +57,22 @@ const FormAddProduct: FC = () => {
       }),
   });
 
-  const initialValues: FormAddProductValues = {
-    product_name: '',
-    product_desc: '',
-    product_category: 'regular',
-    product_price: 0,
+  const initialValues: FormEditProductValues = {
+    product_name: data?.product_name,
+    product_desc: data?.product_desc,
+    product_category: data?.product_category,
+    product_price: data?.product_price,
   };
 
-  const submitForm = async (values: FormAddProductValues) => {
-    const res = await addProduct(values);
+  const submitForm = async (values: FormEditProductValues) => {
+    const res = await editProduct({ ...values, id });
     if ('error' in res) {
-      displaySnackBar(dispatch, false, 'Product already exists!');
+      displaySnackBar(dispatch, false, 'Editing failed!');
     }
     if ('data' in res) {
-      displaySnackBar(dispatch, true, 'Product has been added');
+      displaySnackBar(dispatch, true, 'Product has been edited!');
       setTimeout(() => {
-        router.push('/products?page=1');
+        router.push(`/products/${id}`);
       }, 2000);
     }
   };
@@ -139,7 +150,7 @@ const FormAddProduct: FC = () => {
                   max='100000.00'
                   step='0.01'
                 />
-                <StyledBtnSubmit>Add</StyledBtnSubmit>
+                <StyledBtnSubmit>Edit</StyledBtnSubmit>
               </StyledForm>
             );
           }}
@@ -149,4 +160,4 @@ const FormAddProduct: FC = () => {
   );
 };
 
-export default FormAddProduct;
+export default FormEditProduct;

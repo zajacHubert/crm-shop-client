@@ -44,6 +44,7 @@ import {
   setSuccess,
 } from '@/store/slices/snackbarSlice';
 import { addProductToOrder } from '@/store/slices/orderSlice';
+import { displaySnackBar } from '@/utils/displaySnackBar';
 
 const ProductsPage: NextPage = () => {
   const router = useRouter();
@@ -106,10 +107,7 @@ const ProductsPage: NextPage = () => {
   };
 
   const addProduct = (product: Product) => {
-    dispatch(closeSnackbar());
-    dispatch(setSuccess(true));
-    dispatch(setMessage('Product added to order!'));
-    dispatch(openSnackBar());
+    displaySnackBar(dispatch, true, 'Product added to order!');
     dispatch(addProductToOrder(product));
   };
 
