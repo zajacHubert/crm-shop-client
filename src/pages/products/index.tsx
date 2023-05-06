@@ -131,7 +131,7 @@ const ProductsPage: NextPage = () => {
         <StyledTable>
           <StyledThead>
             <StyledTr>
-              <StyledTh>Product number </StyledTh>
+              <StyledTh>Product number</StyledTh>
               <StyledTh>
                 Product name
                 <StyledBtnArrow
