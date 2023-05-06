@@ -12,15 +12,23 @@ import {
   StyledPRole,
   StyledTitle,
 } from './Header.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import { useLogoutMutation } from '@/store/apis/userApi';
+import { logout } from '@/store/slices/userSlice';
 
 const Header: FC = () => {
   const router = useRouter();
   const title = router.pathname.split('/')[1];
-  const loggedUser = useSelector(
-    (state: RootState) => state.user.auth?.user_logged
-  );
+  const auth = useSelector((state: RootState) => state.user.auth);
+
+  const dispatch = useDispatch();
+  const [logoutApi] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    await logoutApi({});
+    dispatch(logout());
+  };
 
   return (
     <StyledHeader>
@@ -31,10 +39,10 @@ const Header: FC = () => {
           </StyledBoxTitle>
           <StyledBoxUser>
             <StyledBoxUserInfo>
-              <StyledPName>{loggedUser?.name}</StyledPName>
-              <StyledPRole>{loggedUser?.role?.role_name}</StyledPRole>
+              <StyledPName>{auth?.user_logged?.name}</StyledPName>
+              <StyledPRole>{auth?.user_logged?.role?.role_name}</StyledPRole>
             </StyledBoxUserInfo>
-            <StyledBtnLogout>Logout</StyledBtnLogout>
+            <StyledBtnLogout onClick={handleLogout}>Logout</StyledBtnLogout>
           </StyledBoxUser>
         </StyledContainerMain>
       </StyledContainerHeader>

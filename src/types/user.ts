@@ -20,12 +20,11 @@ export interface UserLogoutResponse {
   message: string;
 }
 
-export interface UserRefreshAuthResponse {
+export interface Auth {
   jwt: string;
   user_logged: User;
 }
 
-export interface Auth {
-  jwt: string;
-  user_logged: User;
+export interface UserRefreshAuthResponse {
+  data: Auth;
 }

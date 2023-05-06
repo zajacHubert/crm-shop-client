@@ -24,12 +24,18 @@ const NewOrderPage: NextPage = () => {
   const orderedProducts = useSelector(
     (state: RootState) => state.order.orderedProducts
   );
+
   const orderValue = orderedProducts.length
     ? orderedProducts.reduce(
         (prev, curr) => prev + Number(curr.product_price),
         0
       )
     : 0;
+  const loggedUser = useSelector(
+    (state: RootState) => state.user.auth?.user_logged
+  );
+
+  const addOrder = async () => {};
   return (
     <Layout>
       <StyledTitle>Your Order</StyledTitle>

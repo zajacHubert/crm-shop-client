@@ -20,12 +20,21 @@ import {
   StyledPNavItem,
   StyledTitleLogo,
 } from './Sidebar.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
+import { useLogoutMutation } from '@/store/apis/userApi';
+import { logout } from '@/store/slices/userSlice';
 
 const Sidebar: FC = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const auth = useSelector((state: RootState) => state.user.auth);
+  const [logoutApi] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    await logoutApi({});
+    dispatch(logout());
+  };
   return (
     <StyledAside>
       <StyledBoxLogo>
@@ -81,7 +90,7 @@ const Sidebar: FC = () => {
       <StyledBoxUser>
         <StyledPName>{auth?.user_logged?.name}</StyledPName>
         <StyledBoxIcon>
-          <StyledBtnLogout>
+          <StyledBtnLogout onClick={handleLogout}>
             <FontAwesomeIcon icon={faArrowRightFromBracket} />
           </StyledBtnLogout>
         </StyledBoxIcon>

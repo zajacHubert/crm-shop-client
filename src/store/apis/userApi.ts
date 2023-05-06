@@ -5,6 +5,7 @@ import {
   UserRefreshAuthResponse,
 } from '@/types/user';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getCookie } from 'cookies-next';
 
 export const usersApi = createApi({
   reducerPath: 'apiUsers',
@@ -27,14 +28,13 @@ export const usersApi = createApi({
           method: 'POST',
         }),
       }),
-      refreshAuth: builder.mutation<
-        UserRefreshAuthResponse,
-        { cookieJwt: string }
-      >({
-        query: (args) => ({
-          url: '/logout',
+      refreshAuth: builder.mutation<UserRefreshAuthResponse, {}>({
+        query: () => ({
+          url: '/refresh-auth',
           method: 'POST',
-          headers: { Authorization: `Bearer ${args.cookieJwt}` },
+          headers: {
+            Authorization: `Bearer ${getCookie('jwt')}`,
+          },
         }),
       }),
     };

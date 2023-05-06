@@ -17,9 +17,12 @@ const orderSlice = createSlice({
       state.orderedProducts = [...state.orderedProducts, action.payload];
     },
     removeProductFromOrder(state, action: PayloadAction<string>) {
-      state.orderedProducts = state.orderedProducts.filter(
-        (product) => product.id !== action.payload
+      const found = state.orderedProducts.findIndex(
+        (product) => product.id === action.payload
       );
+      if (found > -1) {
+        state.orderedProducts.splice(found, 1);
+      }
     },
   },
 });
