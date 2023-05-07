@@ -37,12 +37,7 @@ import { RootState } from '@/store';
 import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import { openPopup, setId } from '@/store/slices/popupSlice';
 import Snackbar from '@/components/_shared/ui/Snackbar';
-import {
-  closeSnackbar,
-  openSnackBar,
-  setMessage,
-  setSuccess,
-} from '@/store/slices/snackbarSlice';
+
 import { addProductToOrder } from '@/store/slices/orderSlice';
 import { displaySnackBar } from '@/utils/displaySnackBar';
 

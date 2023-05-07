@@ -11,20 +11,20 @@ import {
   StyledTr,
 } from '@/components/_shared/ui/Table.css';
 import { RootState } from '@/store';
-import { useFetchOrdersQuery } from '@/store/apis/orderApi';
-import { Product } from '@/types/product';
+import {
+  useDeleteOrderMutation,
+  useFetchOrdersQuery,
+} from '@/store/apis/orderApi';
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPen,
-  faTrash,
-  faArrowDown,
-  faEye,
-} from '@fortawesome/free-solid-svg-icons';
+import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
 import { countOrderValue } from '@/utils/counteOrderValue';
 import Pagination from '@/components/_shared/ui/Pagination';
+import { formatDate } from '@/utils/formatDate';
+import { openPopup, setId } from '@/store/slices/popupSlice';
+import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 
 const OrdersPage: NextPage = () => {
   const router = useRouter();
@@ -33,55 +33,59 @@ const OrdersPage: NextPage = () => {
   const pageParam = Number(router.query.page);
 
   const { data: orders, isLoading } = useFetchOrdersQuery({ page: pageParam });
+  const [deleteFunction] = useDeleteOrderMutation();
+
+  const removeOrder = (id: string) => {
+    dispatch(setId(id));
+    dispatch(openPopup());
+  };
 
   return (
-    <Layout>
-      <StyledTable>
-        <StyledThead>
-          <StyledTr>
-            <StyledTh>Order number</StyledTh>
-            <StyledTh>Date of order</StyledTh>
-            <StyledTh>User</StyledTh>
-            <StyledTh>Order value</StyledTh>
-            <StyledTh>Actions</StyledTh>
-          </StyledTr>
-        </StyledThead>
-        <StyledTbody>
-          {!orders?.data.length && !isLoading && (
+    <>
+      {isPopupOpen && <PopupConfirmDelete deleteFunction={deleteFunction} />}
+      <Layout>
+        <StyledTable>
+          <StyledThead>
             <StyledTr>
-              <StyledTdEmpty>No products</StyledTdEmpty>
+              <StyledTh>Order number</StyledTh>
+              <StyledTh>Date of order</StyledTh>
+              <StyledTh>User</StyledTh>
+              <StyledTh>Order value</StyledTh>
+              <StyledTh>Actions</StyledTh>
             </StyledTr>
-          )}
-          {Boolean(orders?.data.length && !isLoading) &&
-            orders?.data.map((order, i) => (
-              <StyledTr key={order.id}>
-                <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
-                <StyledTd>{order.created_at}</StyledTd>
-                <StyledTd>{order.user.name}</StyledTd>
-                <StyledTd>{countOrderValue(order.products)}</StyledTd>
-                <StyledTd>
-                  <StyledBoxBtns>
-                    <StyledBtnIcon
-                      onClick={() => router.push(`/products/${order.id}`)}
-                    >
-                      <FontAwesomeIcon icon={faEye} />
-                    </StyledBtnIcon>
-                    <StyledBtnIcon
-                      onClick={() => router.push(`/orders/${order.id}/edit`)}
-                    >
-                      <FontAwesomeIcon icon={faPen} />
-                    </StyledBtnIcon>
-                    <StyledBtnIcon>
-                      <FontAwesomeIcon icon={faTrash} />
-                    </StyledBtnIcon>
-                  </StyledBoxBtns>
-                </StyledTd>
+          </StyledThead>
+          <StyledTbody>
+            {!orders?.data.length && !isLoading && (
+              <StyledTr>
+                <StyledTdEmpty>No products</StyledTdEmpty>
               </StyledTr>
-            ))}
-        </StyledTbody>
-      </StyledTable>
-      <Pagination listLength={orders?.total!}></Pagination>
-    </Layout>
+            )}
+            {Boolean(orders?.data.length && !isLoading) &&
+              orders?.data.map((order, i) => (
+                <StyledTr key={order.id}>
+                  <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
+                  <StyledTd>{formatDate(order.created_at)}</StyledTd>
+                  <StyledTd>{order.user.name}</StyledTd>
+                  <StyledTd>{countOrderValue(order.products!)}</StyledTd>
+                  <StyledTd>
+                    <StyledBoxBtns>
+                      <StyledBtnIcon
+                        onClick={() => router.push(`/orders/${order.id}`)}
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                      </StyledBtnIcon>
+                      <StyledBtnIcon onClick={() => removeOrder(order.id)}>
+                        <FontAwesomeIcon icon={faTrash} />
+                      </StyledBtnIcon>
+                    </StyledBoxBtns>
+                  </StyledTd>
+                </StyledTr>
+              ))}
+          </StyledTbody>
+        </StyledTable>
+        <Pagination listLength={orders?.total!}></Pagination>
+      </Layout>
+    </>
   );
 };
 
