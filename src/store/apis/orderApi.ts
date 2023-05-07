@@ -1,11 +1,13 @@
-import {
-  DeleteProductResponse,
-  FormEditProductValues,
-  Product,
-} from '@/types/product';
+import { DeleteProductResponse, Product } from '@/types/product';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { FormAddProductValues } from '../../types/product';
-import { GetOrdersResponse, Order } from '@/types/order';
+
+import {
+  DeleteOrderResponse,
+  GetOrdersResponse,
+  Order,
+  OrderToAdd,
+  PostOrderResponse,
+} from '@/types/order';
 
 export const ordersApi = createApi({
   reducerPath: 'apiOrders',
@@ -39,33 +41,23 @@ export const ordersApi = createApi({
           return [{ type: 'Order', id: result?.id }];
         },
       }),
-      addOrder: builder.mutation<Product, FormAddProductValues>({
+      addOrder: builder.mutation<PostOrderResponse, OrderToAdd>({
         query: (formAddProductValues) => ({
           url: '/',
           method: 'POST',
           body: formAddProductValues,
         }),
         invalidatesTags: (result) => {
-          return [{ type: 'Order', id: result?.id }];
+          return [{ type: 'Order', id: result?.order_id }];
         },
       }),
-      editOrder: builder.mutation<Product, FormEditProductValues>({
-        query: ({ id, ...formEditProductValues }) => ({
-          url: `/${id}`,
-          method: 'PUT',
-          body: formEditProductValues,
-        }),
-        invalidatesTags: (result) => {
-          return [{ type: 'Order', id: result?.id }];
-        },
-      }),
-      deleteOrder: builder.mutation<DeleteProductResponse, string>({
+      deleteOrder: builder.mutation<DeleteOrderResponse, string>({
         query: (id) => ({
           url: `/${id}`,
           method: 'DELETE',
         }),
         invalidatesTags: (result) => {
-          return [{ type: 'Order', id: result?.id }];
+          return [{ type: 'Order', id: result?.order_id }];
         },
       }),
     };
@@ -76,6 +68,5 @@ export const {
   useFetchOrdersQuery,
   useFetchOrderQuery,
   useAddOrderMutation,
-  useEditOrderMutation,
   useDeleteOrderMutation,
 } = ordersApi;

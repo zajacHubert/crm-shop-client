@@ -15,14 +15,19 @@ import {
   StyledTitle,
 } from '@/components/orders/NewOrder.css';
 import { RootState } from '@/store';
-import { removeProductFromOrder } from '@/store/slices/orderSlice';
+import { useAddOrderMutation } from '@/store/apis/orderApi';
+import { clearOrder, removeProductFromOrder } from '@/store/slices/orderSlice';
 import { Product } from '@/types/product';
 import { countOrderValue } from '@/utils/counteOrderValue';
+import { displaySnackBar } from '@/utils/displaySnackBar';
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 
 const NewOrderPage: NextPage = () => {
+  const router = useRouter();
   const dispatch = useDispatch();
+  const [addNewOrder, { isSuccess, isLoading }] = useAddOrderMutation();
   const orderedProducts = useSelector(
     (state: RootState) => state.order.orderedProducts
   );
@@ -34,7 +39,29 @@ const NewOrderPage: NextPage = () => {
     (state: RootState) => state.user.auth?.user_logged
   );
 
-  const addOrder = async () => {};
+  const addOrder = async () => {
+    const res = await addNewOrder({
+      user_id: loggedUser?.id!,
+      productsIds: orderedProducts.map((product) => product.id),
+    });
+    if ('data' in res) {
+      displaySnackBar(dispatch, true, 'Ordered successfully');
+      router.push('/products?page=1');
+      dispatch(clearOrder());
+    } else {
+      displaySnackBar(dispatch, false, 'Order filed!');
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <>
+        <Layout>
+          <p>Loading...</p>
+        </Layout>
+      </>
+    );
+  }
   return (
     <Layout>
       <StyledTitle>{orderedProducts.length ? 'Your Order' : ''}</StyledTitle>
@@ -62,7 +89,7 @@ const NewOrderPage: NextPage = () => {
               <StyledPSummary>Total</StyledPSummary>
               <StyledPTotal>{orderValue}</StyledPTotal>
             </StyledBoxSummary>
-            <StyledBtnOrder>Order</StyledBtnOrder>
+            <StyledBtnOrder onClick={addOrder}>Order</StyledBtnOrder>
           </>
         ) : (
           <StyledTextNoOrder>No ordered products</StyledTextNoOrder>

@@ -20,3 +20,18 @@ export interface GetOrdersResponse {
   last_page: number;
   total: number;
 }
+
+export interface OrderToAdd {
+  user_id: string;
+  productsIds: string[];
+}
+
+export interface PostOrderResponse {
+  success: boolean;
+  order_id: string;
+}
+
+export interface DeleteOrderResponse {
+  success: boolean;
+  order_id: string;
+}

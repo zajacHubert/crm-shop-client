@@ -57,7 +57,7 @@ const OrdersPage: NextPage = () => {
           <StyledTbody>
             {!orders?.data.length && !isLoading && (
               <StyledTr>
-                <StyledTdEmpty>No products</StyledTdEmpty>
+                <StyledTdEmpty>No orders</StyledTdEmpty>
               </StyledTr>
             )}
             {Boolean(orders?.data.length && !isLoading) &&

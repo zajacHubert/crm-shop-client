@@ -24,8 +24,12 @@ const orderSlice = createSlice({
         state.orderedProducts.splice(found, 1);
       }
     },
+    clearOrder(state) {
+      state.orderedProducts = [];
+    },
   },
 });
 
-export const { addProductToOrder, removeProductFromOrder } = orderSlice.actions;
+export const { addProductToOrder, removeProductFromOrder, clearOrder } =
+  orderSlice.actions;
 export default orderSlice.reducer;
