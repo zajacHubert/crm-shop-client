@@ -17,12 +17,15 @@ export const ordersApi = createApi({
   tagTypes: ['Order'],
   endpoints(builder) {
     return {
-      fetchOrders: builder.query<GetOrdersResponse, { page: number }>({
+      fetchOrders: builder.query<
+        GetOrdersResponse,
+        { page: number; sort_param?: string; direction?: string }
+      >({
         query: (arg) => {
-          const { page } = arg;
+          const { page, sort_param, direction } = arg;
           return {
             url: '/',
-            params: { page },
+            params: { page, sort_param, direction },
           };
         },
         providesTags: (result) =>

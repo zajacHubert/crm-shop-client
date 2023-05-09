@@ -1,5 +1,8 @@
+import { User } from './../../types/user';
 import { FormLoginValues, FormRegisterValues } from '@/types/forms';
 import {
+  GetUsersResponse,
+  UserDeleteResponse,
   UserLoginResponse,
   UserLogoutResponse,
   UserRefreshAuthResponse,
@@ -16,6 +19,30 @@ export const usersApi = createApi({
   tagTypes: ['User'],
   endpoints(builder) {
     return {
+      fetchUsers: builder.query<GetUsersResponse, { page: number }>({
+        query: (arg) => {
+          const { page } = arg;
+          return {
+            url: '/users',
+            params: { page },
+          };
+        },
+        providesTags: (result) =>
+          result
+            ? [
+                ...result.data.map(({ id }) => ({
+                  type: 'User' as const,
+                  id,
+                })),
+              ]
+            : [{ type: 'User', id: 'LIST' }],
+      }),
+      fetchUser: builder.query<User, string>({
+        query: (id) => `/users/${id}`,
+        providesTags: (result) => {
+          return [{ type: 'User', id: result?.id }];
+        },
+      }),
       register: builder.mutation<UserRegisterResponse, FormRegisterValues>({
         query: (formRegisterValues) => ({
           url: '/register',
@@ -45,13 +72,25 @@ export const usersApi = createApi({
           },
         }),
       }),
+      deleteUser: builder.mutation<UserDeleteResponse, string>({
+        query: (id) => ({
+          url: `/${id}`,
+          method: 'DELETE',
+        }),
+        invalidatesTags: (result) => {
+          return [{ type: 'User', id: result?.user_id }];
+        },
+      }),
     };
   },
 });
 
 export const {
+  useFetchUsersQuery,
+  useFetchUserQuery,
   useLoginMutation,
   useRegisterMutation,
   useLogoutMutation,
   useRefreshAuthMutation,
+  useDeleteUserMutation,
 } = usersApi;

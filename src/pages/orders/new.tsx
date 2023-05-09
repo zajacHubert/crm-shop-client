@@ -43,7 +43,9 @@ const NewOrderPage: NextPage = () => {
     const res = await addNewOrder({
       user_id: loggedUser?.id!,
       productsIds: orderedProducts.map((product) => product.id),
+      value: orderValue as number,
     });
+    console.log(res);
     if ('data' in res) {
       displaySnackBar(dispatch, true, 'Ordered successfully');
       router.push('/products?page=1');

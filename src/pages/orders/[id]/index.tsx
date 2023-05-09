@@ -1,6 +1,7 @@
 import Layout from '@/components/_shared/navigation/Layout';
 import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import Snackbar from '@/components/_shared/ui/Snackbar';
+
 import {
   StyledBtnBack,
   StyledContainerOrder,
@@ -70,9 +71,7 @@ const SingleOrderPage: NextPage = () => {
                 {data?.user.name} - {formatDate(data?.created_at!)}
               </StyledTitleOrder>
               <StyledPInfo>{data?.user.email}</StyledPInfo>
-              <StyledPTotal>
-                Total: {countOrderValue(data?.products ?? [])}
-              </StyledPTotal>
+              <StyledPTotal>Total: {data?.value}</StyledPTotal>
               <StyledPInfo>Ordered products:</StyledPInfo>
               <StyledList>
                 {data?.products.map((product: Product) => (

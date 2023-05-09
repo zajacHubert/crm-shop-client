@@ -4,6 +4,7 @@ export interface Order {
   id: string;
   user_id: string;
   created_at: string;
+  value: number;
   user: {
     id: string;
     name: string;
@@ -24,6 +25,7 @@ export interface GetOrdersResponse {
 export interface OrderToAdd {
   user_id: string;
   productsIds: string[];
+  value: number;
 }
 
 export interface PostOrderResponse {

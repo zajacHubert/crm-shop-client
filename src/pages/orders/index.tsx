@@ -26,13 +26,34 @@ import { formatDate } from '@/utils/formatDate';
 import { openPopup, setId } from '@/store/slices/popupSlice';
 import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 
+import {
+  StyledBtn,
+  StyledRow,
+  StyledSelectSort,
+  StyledText,
+} from '@/components/orders/RowOrderList.css';
+import { ChangeEvent, useEffect, useState } from 'react';
+
 const OrdersPage: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const isPopupOpen = useSelector((state: RootState) => state.popup.isOpen);
   const pageParam = Number(router.query.page);
+  const sortParam = router.query.sort_param as string;
+  const directionParam = router.query.direction as string;
 
-  const { data: orders, isLoading } = useFetchOrdersQuery({ page: pageParam });
+  const [sortValue, setSortValue] = useState('created_at');
+  const [sortDirection, setSortDirection] = useState('asc');
+
+  const {
+    data: orders,
+    isLoading,
+    refetch,
+  } = useFetchOrdersQuery({
+    page: pageParam,
+    sort_param: sortParam ?? '',
+    direction: directionParam ?? '',
+  });
   const [deleteFunction] = useDeleteOrderMutation();
 
   const removeOrder = (id: string) => {
@@ -40,10 +61,38 @@ const OrdersPage: NextPage = () => {
     dispatch(openPopup());
   };
 
+  const updateParams = () => {
+    router.query.sort_param = sortValue;
+    router.query.direction = sortDirection;
+    router.push(router);
+  };
+
   return (
     <>
       {isPopupOpen && <PopupConfirmDelete deleteFunction={deleteFunction} />}
       <Layout>
+        <StyledRow>
+          <StyledText>Sort orders by:</StyledText>
+          <StyledSelectSort
+            value={sortValue}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              setSortValue(e.target.value)
+            }
+          >
+            <option value='created_at'>Date</option>
+            <option value='value'>Value</option>
+          </StyledSelectSort>
+          <StyledSelectSort
+            value={sortDirection}
+            onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+              setSortDirection(e.target.value)
+            }
+          >
+            <option value='asc'>Ascending</option>
+            <option value='desc'>Descending</option>
+          </StyledSelectSort>
+          <StyledBtn onClick={updateParams}>Show sorted</StyledBtn>
+        </StyledRow>
         <StyledTable>
           <StyledThead>
             <StyledTr>

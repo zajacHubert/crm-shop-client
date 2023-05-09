@@ -10,6 +10,14 @@ export interface User {
   orders?: Order[];
 }
 
+export interface GetUsersResponse {
+  data: User[];
+  current_page: number;
+  per_page: number;
+  last_page: number;
+  total: number;
+}
+
 export interface UserRegisterResponse {
   data: User;
 }
@@ -31,4 +39,9 @@ export interface Auth {
 
 export interface UserRefreshAuthResponse {
   data: Auth;
+}
+
+export interface UserDeleteResponse {
+  success: boolean;
+  user_id: string;
 }
