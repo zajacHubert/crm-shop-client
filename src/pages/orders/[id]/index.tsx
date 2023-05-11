@@ -37,7 +37,7 @@ const SingleOrderPage: NextPage = () => {
   );
   const [deleteFunction, { isLoading, isSuccess }] = useDeleteOrderMutation();
 
-  const removeOrder = (id: string) => {
+  const removeOrder = () => {
     dispatch(setId(id));
     dispatch(openPopup());
   };
@@ -81,7 +81,7 @@ const SingleOrderPage: NextPage = () => {
                 ))}
               </StyledList>
               <StyledBtnBack onClick={() => router.back()}>Back</StyledBtnBack>
-              <StyledBtnRemove onClick={() => removeOrder(id)}>
+              <StyledBtnRemove onClick={removeOrder}>
                 Remove Order
               </StyledBtnRemove>
             </>
