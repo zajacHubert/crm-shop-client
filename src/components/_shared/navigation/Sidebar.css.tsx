@@ -24,6 +24,7 @@ export const StyledBoxLogo = styled.div`
   margin: 0 auto;
   margin-bottom: 100px;
   cursor: pointer;
+  background-color: ${({ theme }) => theme.gray};
 `;
 
 export const StyledTitleLogo = styled.h2`
@@ -57,7 +58,7 @@ export const StyledBoxMenuItem = styled.div<StyledBoxMenuItemInterface>`
   transition: 0.3s;
 
   &:hover {
-    background-color: #cdcdcd;
+    background-color: ${({ isActive }) => (isActive ? '#000' : '#cdcdcd')};
   }
 `;
 

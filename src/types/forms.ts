@@ -20,3 +20,9 @@ export interface FormAddProductValues {
 }
 
 export type FormEditProductValues = Partial<Product>;
+
+export interface FormEditUserValues {
+  email: string;
+  name: string;
+  role_id: string;
+}

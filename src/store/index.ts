@@ -10,6 +10,7 @@ import orderSlice from './slices/orderSlice';
 import { usersApi } from './apis/userApi';
 import userSlice from './slices/userSlice';
 import { ordersApi } from './apis/orderApi';
+import { rolesApi } from './apis/roleApi';
 
 const nonSerializableMiddleware = createSerializableStateInvariantMiddleware({
   isSerializable: (value) => typeof value !== 'function',
@@ -24,13 +25,15 @@ export const store = configureStore({
     [productsApi.reducerPath]: productsApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
     [ordersApi.reducerPath]: ordersApi.reducer,
+    [rolesApi.reducerPath]: rolesApi.reducer,
   },
   middleware: (getDefaultMiddleware) => {
     return getDefaultMiddleware()
       .concat(nonSerializableMiddleware)
       .concat(productsApi.middleware)
       .concat(usersApi.middleware)
-      .concat(ordersApi.middleware);
+      .concat(ordersApi.middleware)
+      .concat(rolesApi.middleware);
   },
 });
 
