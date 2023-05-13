@@ -33,6 +33,7 @@ import { updateSortParams } from '@/utils/updateSortParams';
 import { useRouter } from 'next/router';
 import { User } from '@/types/user';
 import { openPopup, setId } from '@/store/slices/popupSlice';
+import RowUsersList from '@/components/users/RowUsersList';
 
 const UsersPage = () => {
   const router = useRouter();
@@ -85,6 +86,7 @@ const UsersPage = () => {
       {isSnackBarOpen && <Snackbar />}
 
       <Layout>
+        <RowUsersList />
         <StyledTable>
           <StyledThead>
             <StyledTr>

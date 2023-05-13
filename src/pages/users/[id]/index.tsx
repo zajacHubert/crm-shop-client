@@ -12,6 +12,12 @@ import {
   StyledTextRole,
   StyledBoxBtns,
   StyledTextDelete,
+  StyledPEmpty,
+  StyledListOrders,
+  StyledListItem,
+  StyledPDate,
+  StyledPValue,
+  StyledBtnOrder,
 } from '@/components/users/SingleUserPage.css';
 import { useDeleteUserMutation, useFetchUserQuery } from '@/store/apis/userApi';
 import { NextPage } from 'next';
@@ -25,6 +31,7 @@ import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import { openPopup, setId } from '@/store/slices/popupSlice';
 import { displaySnackBar } from '@/utils/displaySnackBar';
 import Snackbar from '@/components/_shared/ui/Snackbar';
+import { formatDate } from '@/utils/formatDate';
 
 const SingleUserPage: NextPage = () => {
   const router = useRouter();
@@ -78,7 +85,34 @@ const SingleUserPage: NextPage = () => {
                   </StyledBoxBtns>
                 </StyledBoxUser>
               </StyledRowUser>
-              <StyledRowOrders>Orders</StyledRowOrders>
+              <StyledRowOrders>
+                {data?.orders?.length ? (
+                  <StyledListOrders>
+                    {data?.orders
+                      .slice()
+                      .sort(
+                        (a, b) =>
+                          new Date(b.created_at).getTime() -
+                          new Date(a.created_at).getTime()
+                      )
+                      .map((order) => (
+                        <StyledListItem key={order.id}>
+                          <StyledPDate>
+                            {formatDate(order.created_at)}
+                          </StyledPDate>
+                          <StyledPValue> {order.value}</StyledPValue>
+                          <StyledBtnOrder
+                            onClick={() => router.push(`/orders/${order.id}`)}
+                          >
+                            Check order
+                          </StyledBtnOrder>
+                        </StyledListItem>
+                      ))}
+                  </StyledListOrders>
+                ) : (
+                  <StyledPEmpty>No orders</StyledPEmpty>
+                )}
+              </StyledRowOrders>
             </>
           )}
         </StyledContainer>

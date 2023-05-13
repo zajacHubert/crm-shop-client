@@ -28,6 +28,10 @@ export const StyledInput = styled.input`
   background-color: transparent;
   outline: none;
   font-size: 16px;
+
+  &:-webkit-autofill {
+    -webkit-background-clip: text;
+  }
 `;
 
 export const StyledSelect = styled.select`

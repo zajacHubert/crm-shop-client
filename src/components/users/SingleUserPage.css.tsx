@@ -11,7 +11,7 @@ export const StyledRowUser = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-bottom: 24px;
+  margin-bottom: 50px;
 `;
 
 export const StyledBoxIcon = styled.div`
@@ -71,3 +71,45 @@ export const StyledBtnEdit = styled.button`
 `;
 
 export const StyledRowOrders = styled.div``;
+
+export const StyledPEmpty = styled.p`
+  font-size: 24px;
+  font-weight: 600;
+`;
+
+export const StyledListOrders = styled.ul``;
+
+export const StyledListItem = styled.li`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+`;
+
+export const StyledPDate = styled.p`
+  font-size: 18px;
+  width: 155px;
+  font-weight: 600;
+`;
+
+export const StyledPValue = styled.p`
+  font-size: 18px;
+  font-weight: 500;
+  width: 60px;
+`;
+
+export const StyledBtnOrder = styled.button`
+  min-width: 140px;
+  height: 26px;
+  background-color: ${({ theme }) => theme.gray};
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: 0.3s;
+  border: 1px solid black;
+
+  &:hover {
+    background-color: #cdcdcd;
+  }
+`;

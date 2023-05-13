@@ -24,5 +24,8 @@ export type FormEditProductValues = Partial<Product>;
 export interface FormEditUserValues {
   email: string;
   name: string;
+  password: string;
   role_id: string;
 }
+
+export type FormAddUserValues = FormRegisterValues;
