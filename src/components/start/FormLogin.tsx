@@ -1,4 +1,13 @@
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { FC } from 'react';
+import { Formik } from 'formik';
+import { FormLoginValues } from '@/types/forms';
+import { useLoginMutation } from '@/store/apis/userApi';
+import { useDispatch } from 'react-redux';
+import { setAuth } from '@/store/slices/userSlice';
+import * as yup from 'yup';
+
 import {
   StyledBoxForm,
   StyledPRegister,
@@ -13,21 +22,11 @@ import {
   StyledLabel,
   StyledPError,
 } from '../_shared/ui/Form.css';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import { FormLoginValues } from '@/types/forms';
-import { useLoginMutation } from '@/store/apis/userApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAuth } from '@/store/slices/userSlice';
-import { RootState } from '@/store';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
 
 const FormLogin: FC = () => {
   const router = useRouter();
   const [login, {}] = useLoginMutation();
   const dispatch = useDispatch();
-  const auth = useSelector((state: RootState) => state.user.auth);
 
   const validationSchema = yup.object().shape({
     email: yup.string().required().email().min(4).max(50),
@@ -46,6 +45,7 @@ const FormLogin: FC = () => {
       router.push('/home');
     }
   };
+
   return (
     <StyledBoxForm>
       <StyledTitleForm>Login</StyledTitleForm>

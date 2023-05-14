@@ -1,7 +1,8 @@
+import { useRouter } from 'next/router';
 import { FC } from 'react';
+
 import { StyledRow } from './RowUsersList.css';
 import ButtonAdd from '../_shared/ui/ButtonAdd';
-import { useRouter } from 'next/router';
 
 const RowUsersList: FC = () => {
   const router = useRouter();

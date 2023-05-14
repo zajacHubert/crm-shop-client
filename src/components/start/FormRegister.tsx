@@ -1,10 +1,18 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import Link from 'next/link';
+import { useDispatch } from 'react-redux';
+import { FC } from 'react';
+import { FormRegisterValues } from '@/types/forms';
+import { useLoginMutation, useRegisterMutation } from '@/store/apis/userApi';
+import { setAuth } from '@/store/slices/userSlice';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
 import {
   StyledBoxForm,
   StyledPLogin,
   StyledSpanLink,
 } from './FormRegister.css';
-import { Formik } from 'formik';
 import {
   StyledBoxLabelError,
   StyledBtnSubmit,
@@ -13,19 +21,10 @@ import {
   StyledLabel,
   StyledPError,
 } from '../_shared/ui/Form.css';
-import Link from 'next/link';
-import * as yup from 'yup';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { FormRegisterValues } from '@/types/forms';
-import { useLoginMutation, useRegisterMutation } from '@/store/apis/userApi';
-import { setAuth } from '@/store/slices/userSlice';
 
-const FormRegister = () => {
+const FormRegister: FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const auth = useSelector((state: RootState) => state.user.auth);
   const [register, { error }] = useRegisterMutation();
   const [login] = useLoginMutation();
 
@@ -53,6 +52,7 @@ const FormRegister = () => {
       router.push('/home');
     }
   };
+
   return (
     <StyledBoxForm>
       <Formik

@@ -1,7 +1,28 @@
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import {
+  useDeleteUserMutation,
+  useFetchUsersQuery,
+} from '@/store/apis/userApi';
+import { openPopup, setId } from '@/store/slices/popupSlice';
+import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { updateSortParams } from '@/utils/updateSortParams';
+
+import { User } from '@/types/user';
+import RowUsersList from '@/components/users/RowUsersList';
 import Layout from '@/components/_shared/navigation/Layout';
 import Pagination from '@/components/_shared/ui/Pagination';
 import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import Snackbar from '@/components/_shared/ui/Snackbar';
+import {
+  faPen,
+  faTrash,
+  faArrowDown,
+  faEye,
+} from '@fortawesome/free-solid-svg-icons';
 import {
   StyledBoxBtns,
   StyledBtnArrow,
@@ -14,26 +35,6 @@ import {
   StyledThead,
   StyledTr,
 } from '@/components/_shared/ui/Table.css';
-import { RootState } from '@/store';
-import {
-  useDeleteUserMutation,
-  useFetchUsersQuery,
-} from '@/store/apis/userApi';
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import _ from 'lodash';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faPen,
-  faTrash,
-  faArrowDown,
-  faEye,
-} from '@fortawesome/free-solid-svg-icons';
-import { updateSortParams } from '@/utils/updateSortParams';
-import { useRouter } from 'next/router';
-import { User } from '@/types/user';
-import { openPopup, setId } from '@/store/slices/popupSlice';
-import RowUsersList from '@/components/users/RowUsersList';
 
 const UsersPage = () => {
   const router = useRouter();

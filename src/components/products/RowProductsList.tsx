@@ -1,3 +1,9 @@
+import { useRouter } from 'next/router';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { countOrderValue } from '@/utils/counteOrderValue';
+
 import {
   StyledBoxText,
   StyledBtnOrder,
@@ -7,11 +13,6 @@ import {
   StyledSpan,
 } from './RowProductsList.css';
 import ButtonAdd from '../_shared/ui/ButtonAdd';
-import { FC } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { useRouter } from 'next/router';
-import { countOrderValue } from '@/utils/counteOrderValue';
 
 const RowProductsList: FC = () => {
   const router = useRouter();
@@ -21,6 +22,7 @@ const RowProductsList: FC = () => {
   const orderValue = orderedProduts.length
     ? countOrderValue(orderedProduts)
     : 0;
+
   return (
     <StyledRow>
       <StyledContainerOrder>

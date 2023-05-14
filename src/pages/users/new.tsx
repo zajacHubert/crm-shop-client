@@ -1,6 +1,6 @@
+import { NextPage } from 'next';
 import Layout from '@/components/_shared/navigation/Layout';
 import FormAddUser from '@/components/users/FormAddUser';
-import { NextPage } from 'next';
 
 const NewUserPage: NextPage = () => {
   return (

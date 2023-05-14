@@ -1,3 +1,10 @@
+import Image from 'next/image';
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+
+import { useFetchProductQuery } from '@/store/apis/productApi';
+import { addProductToOrder } from '@/store/slices/orderSlice';
 import Layout from '@/components/_shared/navigation/Layout';
 import { StyledBtnBuy } from '@/components/_shared/ui/Table.css';
 import {
@@ -9,12 +16,6 @@ import {
   StyledPPrice,
   StyledTitleProduct,
 } from '@/components/products/SingleProductPage.css';
-import { useFetchProductQuery } from '@/store/apis/productApi';
-import { addProductToOrder } from '@/store/slices/orderSlice';
-import { NextPage } from 'next';
-import Image from 'next/image';
-import { useRouter } from 'next/router';
-import { useDispatch } from 'react-redux';
 
 const SingleProductPage: NextPage = () => {
   const router = useRouter();
@@ -26,6 +27,7 @@ const SingleProductPage: NextPage = () => {
     dispatch(addProductToOrder(data!));
     router.push('/products?page=1');
   };
+
   return (
     <Layout>
       <StyledContainerProduct>

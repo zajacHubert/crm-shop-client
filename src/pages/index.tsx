@@ -1,6 +1,5 @@
-import Layout from '@/components/_shared/navigation/Layout';
-import FormLogin from '@/components/start/FormLogin';
 import { NextPage } from 'next';
+import FormLogin from '@/components/start/FormLogin';
 
 const HomePage: NextPage = () => {
   return <FormLogin />;

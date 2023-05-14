@@ -1,5 +1,10 @@
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { useLogoutMutation } from '@/store/apis/userApi';
+import { logout } from '@/store/slices/userSlice';
+
 import {
   StyledBoxTitle,
   StyledBoxUser,
@@ -12,18 +17,13 @@ import {
   StyledPRole,
   StyledTitle,
 } from './Header.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { useLogoutMutation } from '@/store/apis/userApi';
-import { logout } from '@/store/slices/userSlice';
 
 const Header: FC = () => {
   const router = useRouter();
-  const title = router.pathname.split('/')[1];
-  const auth = useSelector((state: RootState) => state.user.auth);
-
-  const dispatch = useDispatch();
   const [logoutApi] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const auth = useSelector((state: RootState) => state.user.auth);
+  const title = router.pathname.split('/')[1];
 
   const handleLogout = async () => {
     await logoutApi({});

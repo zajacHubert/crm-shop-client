@@ -1,7 +1,19 @@
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import {
+  useDeleteOrderMutation,
+  useFetchOrderQuery,
+} from '@/store/apis/orderApi';
+import { openPopup, setId } from '@/store/slices/popupSlice';
+import { formatDate } from '@/utils/formatDate';
+import { displaySnackBar } from '@/utils/displaySnackBar';
+
+import { Product } from '@/types/product';
 import Layout from '@/components/_shared/navigation/Layout';
 import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import Snackbar from '@/components/_shared/ui/Snackbar';
-
 import {
   StyledBtnBack,
   StyledContainerOrder,
@@ -12,30 +24,17 @@ import {
   StyledPTotal,
   StyledBtnRemove,
 } from '@/components/orders/SingleOrderPage.css';
-import { RootState } from '@/store';
-import {
-  useDeleteOrderMutation,
-  useFetchOrderQuery,
-} from '@/store/apis/orderApi';
-import { openPopup, setId } from '@/store/slices/popupSlice';
-import { Product } from '@/types/product';
-import { countOrderValue } from '@/utils/counteOrderValue';
-import { displaySnackBar } from '@/utils/displaySnackBar';
-import { formatDate } from '@/utils/formatDate';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
 
 const SingleOrderPage: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const id = router.query.id as string;
-  const { data } = useFetchOrderQuery(id);
   const isPopupOpen = useSelector((state: RootState) => state.popup.isOpen);
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen
   );
   const [deleteFunction, { isLoading, isSuccess }] = useDeleteOrderMutation();
+  const id = router.query.id as string;
+  const { data } = useFetchOrderQuery(id);
 
   const removeOrder = () => {
     dispatch(setId(id));

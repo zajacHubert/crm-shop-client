@@ -1,3 +1,19 @@
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import {
+  useDeleteOrderMutation,
+  useFetchOrdersQuery,
+} from '@/store/apis/orderApi';
+import { formatDate } from '@/utils/formatDate';
+import { countOrderValue } from '@/utils/counteOrderValue';
+import { openPopup, setId } from '@/store/slices/popupSlice';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
+
+import Pagination from '@/components/_shared/ui/Pagination';
+import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import Layout from '@/components/_shared/navigation/Layout';
 import {
   StyledBoxBtns,
@@ -10,21 +26,6 @@ import {
   StyledThead,
   StyledTr,
 } from '@/components/_shared/ui/Table.css';
-import { RootState } from '@/store';
-import {
-  useDeleteOrderMutation,
-  useFetchOrdersQuery,
-} from '@/store/apis/orderApi';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
-import { countOrderValue } from '@/utils/counteOrderValue';
-import Pagination from '@/components/_shared/ui/Pagination';
-import { formatDate } from '@/utils/formatDate';
-import { openPopup, setId } from '@/store/slices/popupSlice';
-import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 
 import {
   StyledBtn,
@@ -38,18 +39,15 @@ const OrdersPage: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const isPopupOpen = useSelector((state: RootState) => state.popup.isOpen);
-  const pageParam = Number(router.query.page);
-  const sortParam = router.query.sort_param as string;
-  const directionParam = router.query.direction as string;
 
   const [sortValue, setSortValue] = useState('created_at');
   const [sortDirection, setSortDirection] = useState('asc');
 
-  const {
-    data: orders,
-    isLoading,
-    refetch,
-  } = useFetchOrdersQuery({
+  const pageParam = Number(router.query.page);
+  const sortParam = router.query.sort_param as string;
+  const directionParam = router.query.direction as string;
+
+  const { data: orders, isLoading } = useFetchOrdersQuery({
     page: pageParam,
     sort_param: sortParam ?? '',
     direction: directionParam ?? '',

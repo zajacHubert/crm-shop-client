@@ -28,13 +28,14 @@ import { logout } from '@/store/slices/userSlice';
 const Sidebar: FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const auth = useSelector((state: RootState) => state.user.auth);
   const [logoutApi] = useLogoutMutation();
+  const auth = useSelector((state: RootState) => state.user.auth);
 
   const handleLogout = async () => {
     await logoutApi({});
     dispatch(logout());
   };
+
   return (
     <StyledAside>
       <StyledBoxLogo>
@@ -52,7 +53,6 @@ const Sidebar: FC = () => {
               <StyledBoxIcon isActive={router.pathname.includes('/products')}>
                 <FontAwesomeIcon icon={faChartSimple} />
               </StyledBoxIcon>
-
               <StyledPNavItem isActive={router.pathname.includes('/products')}>
                 Products
               </StyledPNavItem>
@@ -79,7 +79,6 @@ const Sidebar: FC = () => {
               <StyledBoxIcon isActive={router.pathname.includes('/users')}>
                 <FontAwesomeIcon icon={faUser} />
               </StyledBoxIcon>
-
               <StyledPNavItem isActive={router.pathname.includes('/users')}>
                 Users
               </StyledPNavItem>

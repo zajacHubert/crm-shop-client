@@ -1,5 +1,5 @@
-import FormRegister from '@/components/start/FormRegister';
 import { NextPage } from 'next';
+import FormRegister from '@/components/start/FormRegister';
 
 const RegisterPage: NextPage = () => {
   return <FormRegister />;

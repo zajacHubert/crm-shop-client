@@ -1,11 +1,11 @@
 import { FC } from 'react';
+import Image from 'next/image';
 import {
   StyledBoxImg,
   StyledBoxText,
   StyledContainerMain,
   StyledText,
 } from './WelcomeView.css';
-import Image from 'next/image';
 
 const WelcomeView: FC = () => {
   return (

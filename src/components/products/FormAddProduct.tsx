@@ -1,8 +1,15 @@
+import { useRouter } from 'next/router';
 import { FC } from 'react';
-import { StyledBoxForm, StyledTitleForm } from './FormAddProduct.css';
+import { RootState } from '@/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { useAddProductMutation } from '@/store/apis/productApi';
+import { displaySnackBar } from '@/utils/displaySnackBar';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+
 import { FormAddProductValues } from '@/types/forms';
+import Snackbar from '../_shared/ui/Snackbar';
+import { StyledBoxForm, StyledTitleForm } from './FormAddProduct.css';
 import {
   StyledBoxLabelError,
   StyledBtnSubmit,
@@ -13,12 +20,6 @@ import {
   StyledSelect,
   StyledTextArea,
 } from '../_shared/ui/Form.css';
-import { useAddProductMutation } from '@/store/apis/productApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import Snackbar from '../_shared/ui/Snackbar';
-import { useRouter } from 'next/router';
-import { displaySnackBar } from '@/utils/displaySnackBar';
 
 const FormAddProduct: FC = () => {
   const router = useRouter();
@@ -65,6 +66,7 @@ const FormAddProduct: FC = () => {
       }, 2000);
     }
   };
+
   return (
     <>
       {isSnackBarOpen && <Snackbar />}

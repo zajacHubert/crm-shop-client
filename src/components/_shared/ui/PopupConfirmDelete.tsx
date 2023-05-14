@@ -1,4 +1,7 @@
 import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { closePopup } from '@/store/slices/popupSlice';
 
 import {
   StyledBoxBtns,
@@ -7,9 +10,6 @@ import {
   StyledBtnConfirm,
   StyledTextConfirm,
 } from './PopupConfirmDelete.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { closePopup } from '@/store/slices/popupSlice';
 
 interface PopupConfirmDelete {
   deleteFunction: any;

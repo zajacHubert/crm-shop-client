@@ -1,10 +1,14 @@
+import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { useRegisterMutation } from '@/store/apis/userApi';
 import { useRouter } from 'next/router';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { useFetchRolesQuery } from '@/store/apis/roleApi';
+import { displaySnackBar } from '@/utils/displaySnackBar';
+import Snackbar from '../_shared/ui/Snackbar';
+
 import { FormAddUserValues } from '@/types/forms';
 import {
   StyledBoxForm,
@@ -19,11 +23,8 @@ import {
   StyledLabel,
   StyledPError,
 } from '../_shared/ui/Form.css';
-import { useFetchRolesQuery } from '@/store/apis/roleApi';
-import Snackbar from '../_shared/ui/Snackbar';
-import { displaySnackBar } from '@/utils/displaySnackBar';
 
-const FormAddUser = () => {
+const FormAddUser: FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [addUser, { error }] = useRegisterMutation();

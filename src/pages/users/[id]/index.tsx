@@ -1,4 +1,18 @@
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { useDeleteUserMutation, useFetchUserQuery } from '@/store/apis/userApi';
+import { RootState } from '@/store';
+import { openPopup, setId } from '@/store/slices/popupSlice';
+import { displaySnackBar } from '@/utils/displaySnackBar';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser, faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { formatDate } from '@/utils/formatDate';
+
+import Snackbar from '@/components/_shared/ui/Snackbar';
+import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import Layout from '@/components/_shared/navigation/Layout';
+import { StyledBtnRemove } from '@/components/_shared/ui/ButtonRemove.css';
 import {
   StyledBoxEmail,
   StyledBoxIcon,
@@ -19,19 +33,6 @@ import {
   StyledPValue,
   StyledBtnOrder,
 } from '@/components/users/SingleUserPage.css';
-import { useDeleteUserMutation, useFetchUserQuery } from '@/store/apis/userApi';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faEnvelope } from '@fortawesome/free-solid-svg-icons';
-import { StyledBtnRemove } from '@/components/_shared/ui/ButtonRemove.css';
-import { RootState } from '@/store';
-import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
-import { openPopup, setId } from '@/store/slices/popupSlice';
-import { displaySnackBar } from '@/utils/displaySnackBar';
-import Snackbar from '@/components/_shared/ui/Snackbar';
-import { formatDate } from '@/utils/formatDate';
 
 const SingleUserPage: NextPage = () => {
   const router = useRouter();
@@ -78,7 +79,11 @@ const SingleUserPage: NextPage = () => {
                   </StyledBoxEmail>
                   <StyledTextRole>{data?.role.role_name}</StyledTextRole>
                   <StyledBoxBtns>
-                    <StyledBtnEdit>Edit</StyledBtnEdit>
+                    <StyledBtnEdit
+                      onClick={() => router.push(`/users/${data?.id}/edit`)}
+                    >
+                      Edit
+                    </StyledBtnEdit>
                     <StyledBtnRemove onClick={removeUser}>
                       Delete
                     </StyledBtnRemove>

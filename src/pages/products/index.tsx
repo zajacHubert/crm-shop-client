@@ -1,6 +1,25 @@
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useEffect, useState, ChangeEvent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { openPopup, setId } from '@/store/slices/popupSlice';
+import { updateSortParams } from '@/utils/updateSortParams';
+import {
+  useDeleteProductMutation,
+  useFetchProductsQuery,
+} from '@/store/apis/productApi';
+import { addProductToOrder } from '@/store/slices/orderSlice';
+import { displaySnackBar } from '@/utils/displaySnackBar';
+import _ from 'lodash';
+
+import { Product } from '@/types/product';
+import Pagination from '@/components/_shared/ui/Pagination';
+import Select from '@/components/_shared/ui/Select';
+import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
+import Snackbar from '@/components/_shared/ui/Snackbar';
 import Layout from '@/components/_shared/navigation/Layout';
 import RowProductsList from '@/components/products/RowProductsList';
-import _ from 'lodash';
 import {
   StyledBoxBtns,
   StyledBtnArrow,
@@ -14,7 +33,6 @@ import {
   StyledThead,
   StyledTr,
 } from '@/components/_shared/ui/Table.css';
-import { NextPage } from 'next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faPen,
@@ -22,24 +40,6 @@ import {
   faArrowDown,
   faEye,
 } from '@fortawesome/free-solid-svg-icons';
-import { useRouter } from 'next/router';
-import {
-  useDeleteProductMutation,
-  useFetchProductsQuery,
-} from '@/store/apis/productApi';
-import { useEffect, useState, ChangeEvent } from 'react';
-import { Product } from '@/types/product';
-import Pagination from '@/components/_shared/ui/Pagination';
-import Select from '@/components/_shared/ui/Select';
-import { updateSortParams } from '@/utils/updateSortParams';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
-import { openPopup, setId } from '@/store/slices/popupSlice';
-import Snackbar from '@/components/_shared/ui/Snackbar';
-
-import { addProductToOrder } from '@/store/slices/orderSlice';
-import { displaySnackBar } from '@/utils/displaySnackBar';
 
 const ProductsPage: NextPage = () => {
   const router = useRouter();
@@ -48,7 +48,6 @@ const ProductsPage: NextPage = () => {
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen
   );
-
   const [deleteFunction, {}] = useDeleteProductMutation();
 
   const sortParam = router.query.sort;
@@ -58,6 +57,7 @@ const ProductsPage: NextPage = () => {
   const wayParam: string = router.query.way ? String(router.query.way) : '';
 
   const [category, setCategory] = useState<string>(categoryParam ?? '');
+  const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
 
   const {
     data: products,
@@ -69,7 +69,6 @@ const ProductsPage: NextPage = () => {
     page: pageParam,
     product_category: categoryParam ?? '',
   });
-  const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
 
   useEffect(() => {
     if (!isLoading || isSuccess) {

@@ -1,3 +1,13 @@
+import { NextPage } from 'next';
+import { useRouter } from 'next/router';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { useAddOrderMutation } from '@/store/apis/orderApi';
+import { clearOrder, removeProductFromOrder } from '@/store/slices/orderSlice';
+import { countOrderValue } from '@/utils/counteOrderValue';
+import { displaySnackBar } from '@/utils/displaySnackBar';
+import { Product } from '@/types/product';
+
 import Layout from '@/components/_shared/navigation/Layout';
 import { StyledBtnRemove } from '@/components/_shared/ui/ButtonRemove.css';
 import {
@@ -14,15 +24,6 @@ import {
   StyledTextNoOrder,
   StyledTitle,
 } from '@/components/orders/NewOrder.css';
-import { RootState } from '@/store';
-import { useAddOrderMutation } from '@/store/apis/orderApi';
-import { clearOrder, removeProductFromOrder } from '@/store/slices/orderSlice';
-import { Product } from '@/types/product';
-import { countOrderValue } from '@/utils/counteOrderValue';
-import { displaySnackBar } from '@/utils/displaySnackBar';
-import { NextPage } from 'next';
-import { useRouter } from 'next/router';
-import { useDispatch, useSelector } from 'react-redux';
 
 const NewOrderPage: NextPage = () => {
   const router = useRouter();
@@ -63,6 +64,7 @@ const NewOrderPage: NextPage = () => {
       </>
     );
   }
+
   return (
     <Layout>
       <StyledTitle>{orderedProducts.length ? 'Your Order' : ''}</StyledTitle>

@@ -1,14 +1,15 @@
 import { RootState } from '@/store';
 import { FC, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { closeSnackbar } from '@/store/slices/snackbarSlice';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import {
   StyledBtnIcon,
   StyledContainerSnackbar,
   StyledPMessage,
 } from './Snackbar.css';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { closeSnackbar } from '@/store/slices/snackbarSlice';
 
 const Snackbar: FC = () => {
   const dispatch = useDispatch();

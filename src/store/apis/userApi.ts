@@ -10,6 +10,7 @@ import {
 } from '@/types/user';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getCookie } from 'cookies-next';
+import { FormEditUserValues } from '../../types/forms';
 
 export const usersApi = createApi({
   reducerPath: 'apiUsers',
@@ -72,6 +73,16 @@ export const usersApi = createApi({
           },
         }),
       }),
+      editUser: builder.mutation<User, FormEditUserValues>({
+        query: ({ id, ...formEditUserValues }) => ({
+          url: `/users/${id}`,
+          method: 'PUT',
+          body: formEditUserValues,
+        }),
+        invalidatesTags: (result) => {
+          return [{ type: 'User', id: result?.id }];
+        },
+      }),
       deleteUser: builder.mutation<UserDeleteResponse, string>({
         query: (id) => ({
           url: `/users/${id}`,
@@ -92,5 +103,6 @@ export const {
   useRegisterMutation,
   useLogoutMutation,
   useRefreshAuthMutation,
+  useEditUserMutation,
   useDeleteUserMutation,
 } = usersApi;

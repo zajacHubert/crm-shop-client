@@ -1,6 +1,6 @@
+import { NextPage } from 'next';
 import Layout from '@/components/_shared/navigation/Layout';
 import FormAddProduct from '@/components/products/FormAddProduct';
-import { NextPage } from 'next';
 
 const NewProductPage: NextPage = () => {
   return (

@@ -56,7 +56,7 @@ export const StyledTextArea = styled.textarea`
   outline: none;
   border-bottom: 1px solid #000;
   background-color: transparent;
-  min-height: 60px;
+  min-height: 70px;
   padding: 5px;
 `;
 

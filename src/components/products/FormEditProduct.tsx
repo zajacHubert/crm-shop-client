@@ -1,21 +1,17 @@
-import { FC } from 'react';
-import { Formik } from 'formik';
-import * as yup from 'yup';
-import { FormEditProductValues } from '@/types/forms';
 import { useRouter } from 'next/router';
+import { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   useEditProductMutation,
   useFetchProductQuery,
 } from '@/store/apis/productApi';
+import { displaySnackBar } from '@/utils/displaySnackBar';
 import { RootState } from '@/store';
-import {
-  closeSnackbar,
-  openSnackBar,
-  setMessage,
-  setSuccess,
-} from '@/store/slices/snackbarSlice';
+import { Formik } from 'formik';
+import * as yup from 'yup';
+
 import Snackbar from '../_shared/ui/Snackbar';
+import { FormEditProductValues } from '@/types/forms';
 import { StyledBoxForm, StyledTitleForm } from './FormEditProduct.css';
 import {
   StyledBoxLabelError,
@@ -27,7 +23,6 @@ import {
   StyledSelect,
   StyledTextArea,
 } from '../_shared/ui/Form.css';
-import { displaySnackBar } from '@/utils/displaySnackBar';
 
 const FormEditProduct: FC = () => {
   const router = useRouter();
@@ -38,6 +33,7 @@ const FormEditProduct: FC = () => {
   );
   const id = router.query.id as string;
   const { data } = useFetchProductQuery(id);
+  const [initialValues, setInitialValues] = useState<FormEditProductValues>({});
 
   const validationSchema = yup.object().shape({
     product_name: yup.string().required().min(4).max(50),
@@ -57,12 +53,14 @@ const FormEditProduct: FC = () => {
       }),
   });
 
-  const initialValues: FormEditProductValues = {
-    product_name: data?.product_name,
-    product_desc: data?.product_desc,
-    product_category: data?.product_category,
-    product_price: data?.product_price,
-  };
+  useEffect(() => {
+    setInitialValues({
+      product_name: data?.product_name!,
+      product_desc: data?.product_desc!,
+      product_category: data?.product_category!,
+      product_price: data?.product_price!,
+    });
+  }, [data]);
 
   const submitForm = async (values: FormEditProductValues) => {
     const res = await editProduct({ ...values, id });
@@ -76,12 +74,14 @@ const FormEditProduct: FC = () => {
       }, 2000);
     }
   };
+
   return (
     <>
       {isSnackBarOpen && <Snackbar />}
       <StyledBoxForm>
         <StyledTitleForm>Add a new product</StyledTitleForm>
         <Formik
+          enableReinitialize
           initialValues={initialValues}
           validationSchema={validationSchema}
           onSubmit={submitForm}

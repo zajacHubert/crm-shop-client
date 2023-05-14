@@ -1,7 +1,7 @@
-import { useRouter } from "next/router";
-import { FC } from "react";
+import { useRouter } from 'next/router';
+import { FC } from 'react';
 
-import { StyledRowPagination, StyledButton } from "./Pagination.css";
+import { StyledRowPagination, StyledButton } from './Pagination.css';
 
 interface PaginationProps {
   listLength: number;
@@ -22,12 +22,9 @@ export const Pagination: FC<PaginationProps> = ({ listLength }) => {
             router.push(router);
           }}
           style={{
-            color: `${i + 1 === Number(page) ? "#603582" : "#000"}`,
-            opacity: `${i + 1 === Number(page) ? "1" : "0.5"}`,
+            opacity: `${i + 1 === Number(page) ? '1' : '0.5'}`,
             border: `${
-              i + 1 === Number(page)
-                ? "1px solid #603582 "
-                : "1px solid #e5e5e5"
+              i + 1 === Number(page) ? '1px solid #000 ' : '1px solid #e5e5e5'
             }`,
           }}
         >
