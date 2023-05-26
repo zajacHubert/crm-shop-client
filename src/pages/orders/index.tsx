@@ -34,6 +34,7 @@ import {
   StyledText,
 } from '@/components/orders/RowOrderList.css';
 import { ChangeEvent, useEffect, useState } from 'react';
+import Spinner from '@/components/_shared/ui/Spinner';
 
 const OrdersPage: NextPage = () => {
   const router = useRouter();
@@ -47,7 +48,11 @@ const OrdersPage: NextPage = () => {
   const sortParam = router.query.sort_param as string;
   const directionParam = router.query.direction as string;
 
-  const { data: orders, isLoading } = useFetchOrdersQuery({
+  const {
+    data: orders,
+    isLoading,
+    isFetching,
+  } = useFetchOrdersQuery({
     page: pageParam,
     sort_param: sortParam ?? '',
     direction: directionParam ?? '',
@@ -64,6 +69,14 @@ const OrdersPage: NextPage = () => {
     router.query.direction = sortDirection;
     router.push(router);
   };
+
+  if (isLoading || isFetching) {
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
+  }
 
   return (
     <>

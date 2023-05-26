@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Formik } from 'formik';
 import { FormLoginValues } from '@/types/forms';
 import { useLoginMutation } from '@/store/apis/userApi';
@@ -9,7 +9,9 @@ import { setAuth } from '@/store/slices/userSlice';
 import * as yup from 'yup';
 
 import {
+  StyledBoxError,
   StyledBoxForm,
+  StyledPErrorLogin,
   StyledPRegister,
   StyledSpanLink,
   StyledTitleForm,
@@ -22,11 +24,21 @@ import {
   StyledLabel,
   StyledPError,
 } from '../_shared/ui/Form.css';
+import { UserLoginError } from '@/types/user';
 
 const FormLogin: FC = () => {
   const router = useRouter();
-  const [login, {}] = useLoginMutation();
+  const [login, { error }] = useLoginMutation();
   const dispatch = useDispatch();
+  const [errLogin, setErrLogin] = useState<UserLoginError>(
+    {} as UserLoginError
+  );
+
+  useEffect(() => {
+    if (error) {
+      setErrLogin(error as UserLoginError);
+    }
+  }, [error]);
 
   const validationSchema = yup.object().shape({
     email: yup.string().required().email().min(4).max(50),
@@ -44,6 +56,7 @@ const FormLogin: FC = () => {
       dispatch(setAuth(res.data));
       router.push('/home');
     }
+    console.log(res);
   };
 
   return (
@@ -98,6 +111,11 @@ const FormLogin: FC = () => {
                   <StyledSpanLink>Signup</StyledSpanLink>
                 </Link>
               </StyledPRegister>
+              <StyledBoxError>
+                {'data' in errLogin && (
+                  <StyledPErrorLogin>{errLogin.data.error}</StyledPErrorLogin>
+                )}
+              </StyledBoxError>
             </StyledForm>
           );
         }}

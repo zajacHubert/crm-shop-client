@@ -27,6 +27,21 @@ export interface UserLoginResponse {
   user_logged: User;
 }
 
+export interface UserLoginError {
+  data: {
+    error: string;
+  };
+}
+
+export interface UserRegisterError {
+  data: {
+    data: {
+      email?: string;
+      name?: string;
+    };
+  };
+}
+
 export interface UserLogoutResponse {
   success: boolean;
   message: string;

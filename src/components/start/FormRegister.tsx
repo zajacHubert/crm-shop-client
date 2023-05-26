@@ -1,15 +1,18 @@
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { useDispatch } from 'react-redux';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { FormRegisterValues } from '@/types/forms';
 import { useLoginMutation, useRegisterMutation } from '@/store/apis/userApi';
 import { setAuth } from '@/store/slices/userSlice';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
+import Spinner from '../_shared/ui/Spinner';
 import {
+  StyledBoxError,
   StyledBoxForm,
+  StyledPErrorRegister,
   StyledPLogin,
   StyledSpanLink,
 } from './FormRegister.css';
@@ -21,12 +24,23 @@ import {
   StyledLabel,
   StyledPError,
 } from '../_shared/ui/Form.css';
+import { UserRegisterError } from '@/types/user';
 
 const FormRegister: FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [register, { error }] = useRegisterMutation();
-  const [login] = useLoginMutation();
+  const [register, { error, isLoading: isRegisterLoading }] =
+    useRegisterMutation();
+  const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+  const [errRegister, setErrRegister] = useState<UserRegisterError>(
+    {} as UserRegisterError
+  );
+
+  useEffect(() => {
+    if (error) {
+      setErrRegister(error as UserRegisterError);
+    }
+  }, [error]);
 
   const validationSchema = yup.object().shape({
     name: yup.string().required().min(4).max(50),
@@ -42,14 +56,19 @@ const FormRegister: FC = () => {
   };
 
   const submitForm = async (values: FormRegisterValues) => {
-    await register({
+    const resRegister = await register({
       ...values,
       role_id: '732ab0f4-df43-11ed-b5ea-0242ac120002',
     });
-    const res = await login({ email: values.email, password: values.password });
-    if ('data' in res) {
-      dispatch(setAuth(res.data));
-      router.push('/home');
+    if ('data' in resRegister) {
+      const resLogin = await login({
+        email: values.email,
+        password: values.password,
+      });
+      if ('data' in resLogin) {
+        dispatch(setAuth(resLogin.data));
+        router.push('/home');
+      }
     }
   };
 
@@ -117,6 +136,13 @@ const FormRegister: FC = () => {
                   <StyledSpanLink>Signin</StyledSpanLink>
                 </Link>
               </StyledPLogin>
+              <StyledBoxError>
+                {'data' in errRegister && (
+                  <StyledPErrorRegister>
+                    {errRegister.data.data.email} {errRegister.data.data.name}
+                  </StyledPErrorRegister>
+                )}
+              </StyledBoxError>
             </StyledForm>
           );
         }}

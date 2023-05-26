@@ -35,6 +35,7 @@ import {
   StyledThead,
   StyledTr,
 } from '@/components/_shared/ui/Table.css';
+import Spinner from '@/components/_shared/ui/Spinner';
 
 const UsersPage = () => {
   const router = useRouter();
@@ -53,7 +54,6 @@ const UsersPage = () => {
     isLoading,
     isSuccess,
     isFetching,
-    refetch,
   } = useFetchUsersQuery({ page: pageParam });
 
   useEffect(() => {
@@ -76,7 +76,7 @@ const UsersPage = () => {
   if (isLoading || isFetching) {
     return (
       <Layout>
-        <p>Loading...</p>
+        <Spinner />
       </Layout>
     );
   }

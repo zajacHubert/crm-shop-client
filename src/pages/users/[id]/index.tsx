@@ -33,17 +33,18 @@ import {
   StyledPValue,
   StyledBtnOrder,
 } from '@/components/users/SingleUserPage.css';
+import Spinner from '@/components/_shared/ui/Spinner';
 
 const SingleUserPage: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const id = router.query.id as string;
-  const { data } = useFetchUserQuery(id);
+  const { data, isLoading, isFetching } = useFetchUserQuery(id);
   const isPopupOpen = useSelector((state: RootState) => state.popup.isOpen);
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen
   );
-  const [deleteUser, { isLoading, isSuccess }] = useDeleteUserMutation();
+  const [deleteUser, { isSuccess }] = useDeleteUserMutation();
 
   const removeUser = () => {
     dispatch(setId(id));
@@ -55,6 +56,14 @@ const SingleUserPage: NextPage = () => {
     setTimeout(() => {
       router.push('/users?page=1');
     }, 2000);
+  }
+
+  if (isLoading || isFetching) {
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
   }
 
   return (

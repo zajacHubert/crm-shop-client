@@ -23,6 +23,8 @@ import {
   StyledSelect,
   StyledTextArea,
 } from '../_shared/ui/Form.css';
+import Layout from '../_shared/navigation/Layout';
+import Spinner from '../_shared/ui/Spinner';
 
 const FormEditProduct: FC = () => {
   const router = useRouter();
@@ -32,7 +34,7 @@ const FormEditProduct: FC = () => {
     (state: RootState) => state.snackbar.isOpen
   );
   const id = router.query.id as string;
-  const { data } = useFetchProductQuery(id);
+  const { data, isLoading, isFetching } = useFetchProductQuery(id);
   const [initialValues, setInitialValues] = useState<FormEditProductValues>({});
 
   const validationSchema = yup.object().shape({
@@ -70,10 +72,18 @@ const FormEditProduct: FC = () => {
     if ('data' in res) {
       displaySnackBar(dispatch, true, 'Product has been edited!');
       setTimeout(() => {
-        router.push(`/products/${id}`);
+        router.push(`/products?page=1`);
       }, 2000);
     }
   };
+
+  if (isLoading || isFetching) {
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
+  }
 
   return (
     <>

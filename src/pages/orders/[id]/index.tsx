@@ -24,6 +24,7 @@ import {
   StyledPTotal,
   StyledBtnRemove,
 } from '@/components/orders/SingleOrderPage.css';
+import Spinner from '@/components/_shared/ui/Spinner';
 
 const SingleOrderPage: NextPage = () => {
   const router = useRouter();
@@ -32,9 +33,9 @@ const SingleOrderPage: NextPage = () => {
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen
   );
-  const [deleteFunction, { isLoading, isSuccess }] = useDeleteOrderMutation();
+  const [deleteFunction, { isSuccess }] = useDeleteOrderMutation();
   const id = router.query.id as string;
-  const { data } = useFetchOrderQuery(id);
+  const { data, isLoading, isFetching } = useFetchOrderQuery(id);
 
   const removeOrder = () => {
     dispatch(setId(id));
@@ -48,10 +49,10 @@ const SingleOrderPage: NextPage = () => {
     }, 2000);
   }
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return (
       <Layout>
-        <p>Loading</p>
+        <Spinner />
       </Layout>
     );
   }

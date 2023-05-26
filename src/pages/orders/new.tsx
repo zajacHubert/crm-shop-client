@@ -24,6 +24,7 @@ import {
   StyledTextNoOrder,
   StyledTitle,
 } from '@/components/orders/NewOrder.css';
+import Spinner from '@/components/_shared/ui/Spinner';
 
 const NewOrderPage: NextPage = () => {
   const router = useRouter();
@@ -59,7 +60,7 @@ const NewOrderPage: NextPage = () => {
     return (
       <>
         <Layout>
-          <p>Loading...</p>
+          <Spinner />
         </Layout>
       </>
     );

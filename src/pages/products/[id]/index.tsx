@@ -16,17 +16,26 @@ import {
   StyledPPrice,
   StyledTitleProduct,
 } from '@/components/products/SingleProductPage.css';
+import Spinner from '@/components/_shared/ui/Spinner';
 
 const SingleProductPage: NextPage = () => {
   const router = useRouter();
   const dispatch = useDispatch();
   const id = router.query.id as string;
-  const { data } = useFetchProductQuery(id);
+  const { data, isLoading } = useFetchProductQuery(id);
 
   const handleBuy = () => {
     dispatch(addProductToOrder(data!));
     router.push('/products?page=1');
   };
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
+  }
 
   return (
     <Layout>

@@ -20,11 +20,13 @@ import {
   StyledSelect,
   StyledTextArea,
 } from '../_shared/ui/Form.css';
+import Layout from '../_shared/navigation/Layout';
+import Spinner from '../_shared/ui/Spinner';
 
 const FormAddProduct: FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [addProduct] = useAddProductMutation();
+  const [addProduct, { isLoading }] = useAddProductMutation();
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen
   );
@@ -66,6 +68,14 @@ const FormAddProduct: FC = () => {
       }, 2000);
     }
   };
+
+  if (isLoading) {
+    return (
+      <Layout>
+        <Spinner />
+      </Layout>
+    );
+  }
 
   return (
     <>

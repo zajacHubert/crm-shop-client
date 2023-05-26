@@ -40,6 +40,7 @@ import {
   faArrowDown,
   faEye,
 } from '@fortawesome/free-solid-svg-icons';
+import Spinner from '@/components/_shared/ui/Spinner';
 
 const ProductsPage: NextPage = () => {
   const router = useRouter();
@@ -108,7 +109,7 @@ const ProductsPage: NextPage = () => {
   if (isLoading || isFetching) {
     return (
       <Layout>
-        <p>Loading...</p>
+        <Spinner />
       </Layout>
     );
   }

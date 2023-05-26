@@ -1,4 +1,7 @@
 import { User } from './../../types/user';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getCookie } from 'cookies-next';
+import { FormEditUserValues } from '../../types/forms';
 import { FormLoginValues, FormRegisterValues } from '@/types/forms';
 import {
   GetUsersResponse,
@@ -8,9 +11,6 @@ import {
   UserRefreshAuthResponse,
   UserRegisterResponse,
 } from '@/types/user';
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { getCookie } from 'cookies-next';
-import { FormEditUserValues } from '../../types/forms';
 
 export const usersApi = createApi({
   reducerPath: 'apiUsers',

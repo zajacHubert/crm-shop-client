@@ -23,3 +23,17 @@ export const StyledSpanLink = styled.span`
   margin-left: 5px;
   font-weight: 600;
 `;
+
+export const StyledBoxError = styled.div`
+  position: relative;
+  height: 20px;
+  text-align: center;
+`;
+
+export const StyledPErrorRegister = styled.p`
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  color: ${({ theme }) => theme.danger};
+`;
