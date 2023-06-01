@@ -23,8 +23,12 @@ export const StyledTh = styled.th`
 
 export const StyledTbody = styled.tbody``;
 
-export const StyledTd = styled.td`
-  text-transform: capitalize;
+interface StyledTdInterface {
+  isLower?: boolean;
+}
+
+export const StyledTd = styled.td<StyledTdInterface>`
+  text-transform: ${({ isLower }) => (isLower ? '' : 'capitalize')};
   font-size: 20px;
   padding: 10px;
 `;

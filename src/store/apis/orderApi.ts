@@ -1,4 +1,3 @@
-import { DeleteProductResponse, Product } from '@/types/product';
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 import {
@@ -12,7 +11,7 @@ import {
 export const ordersApi = createApi({
   reducerPath: 'apiOrders',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/orders',
+    baseUrl: `${process.env.NEXT_PUBLIC_API}/orders`,
   }),
   tagTypes: ['Order'],
   endpoints(builder) {

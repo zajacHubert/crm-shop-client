@@ -138,7 +138,7 @@ const UsersPage = () => {
                 <StyledTr key={user.id}>
                   <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
                   <StyledTd>{user.name}</StyledTd>
-                  <StyledTd>{user.email}</StyledTd>
+                  <StyledTd isLower={true}>{user.email}</StyledTd>
                   <StyledTd>{user.role.role_name}</StyledTd>
                   <StyledTd>
                     <StyledBoxBtns>

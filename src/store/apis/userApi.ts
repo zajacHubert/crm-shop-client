@@ -15,7 +15,7 @@ import {
 export const usersApi = createApi({
   reducerPath: 'apiUsers',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api',
+    baseUrl: `${process.env.NEXT_PUBLIC_API}`,
   }),
   tagTypes: ['User'],
   endpoints(builder) {

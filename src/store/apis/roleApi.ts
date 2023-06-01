@@ -5,7 +5,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const rolesApi = createApi({
   reducerPath: 'apiRoles',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:8000/api/roles',
+    baseUrl: `${process.env.NEXT_PUBLIC_API}/roles`,
   }),
   tagTypes: ['Role'],
   endpoints(builder) {

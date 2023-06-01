@@ -5,6 +5,7 @@ import { closePopup } from '@/store/slices/popupSlice';
 
 import {
   StyledBoxBtns,
+  StyledBoxOverlay,
   StyledBoxPopupConfirm,
   StyledBtnCancel,
   StyledBtnConfirm,
@@ -30,15 +31,17 @@ const PopupConfirmDelete: FC<PopupConfirmDelete> = ({ deleteFunction }) => {
     dispatch(closePopup());
   };
   return (
-    <StyledBoxPopupConfirm>
-      <StyledTextConfirm>
-        Are you sure you want to delete thie element?
-      </StyledTextConfirm>
-      <StyledBoxBtns>
-        <StyledBtnConfirm onClick={handleConfirm}>Yes</StyledBtnConfirm>
-        <StyledBtnCancel onClick={handleCancel}>No</StyledBtnCancel>
-      </StyledBoxBtns>
-    </StyledBoxPopupConfirm>
+    <StyledBoxOverlay>
+      <StyledBoxPopupConfirm>
+        <StyledTextConfirm>
+          Are you sure you want to delete thie element?
+        </StyledTextConfirm>
+        <StyledBoxBtns>
+          <StyledBtnConfirm onClick={handleConfirm}>Yes</StyledBtnConfirm>
+          <StyledBtnCancel onClick={handleCancel}>No</StyledBtnCancel>
+        </StyledBoxBtns>
+      </StyledBoxPopupConfirm>
+    </StyledBoxOverlay>
   );
 };
 
