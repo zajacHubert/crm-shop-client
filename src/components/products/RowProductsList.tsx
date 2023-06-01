@@ -23,6 +23,10 @@ const RowProductsList: FC = () => {
     ? countOrderValue(orderedProduts)
     : 0;
 
+  const loggedUser = useSelector(
+    (state: RootState) => state.user.auth?.user_logged
+  );
+
   return (
     <StyledRow>
       <StyledContainerOrder>
@@ -45,9 +49,11 @@ const RowProductsList: FC = () => {
           <StyledPOrderElement>No ordered products</StyledPOrderElement>
         )}
       </StyledContainerOrder>
-      <ButtonAdd onClick={() => router.push('/products/new')}>
-        Add product
-      </ButtonAdd>
+      {loggedUser?.role.role_name !== 'client' && (
+        <ButtonAdd onClick={() => router.push('/products/new')}>
+          Add product
+        </ButtonAdd>
+      )}
     </StyledRow>
   );
 };

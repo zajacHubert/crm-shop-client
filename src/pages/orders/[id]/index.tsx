@@ -36,6 +36,9 @@ const SingleOrderPage: NextPage = () => {
   const [deleteFunction, { isSuccess }] = useDeleteOrderMutation();
   const id = router.query.id as string;
   const { data, isLoading, isFetching } = useFetchOrderQuery(id);
+  const loggedUser = useSelector(
+    (state: RootState) => state.user.auth?.user_logged
+  );
 
   const removeOrder = () => {
     dispatch(setId(id));
@@ -81,9 +84,11 @@ const SingleOrderPage: NextPage = () => {
                 ))}
               </StyledList>
               <StyledBtnBack onClick={() => router.back()}>Back</StyledBtnBack>
-              <StyledBtnRemove onClick={removeOrder}>
-                Remove Order
-              </StyledBtnRemove>
+              {loggedUser?.role.role_name !== 'client' && (
+                <StyledBtnRemove onClick={removeOrder}>
+                  Remove Order
+                </StyledBtnRemove>
+              )}
             </>
           )}
         </StyledContainerOrder>

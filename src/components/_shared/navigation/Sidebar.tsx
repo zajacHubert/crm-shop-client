@@ -71,19 +71,21 @@ const Sidebar: FC = () => {
               </StyledPNavItem>
             </StyledBoxMenuItem>
           </li>
-          <li>
-            <StyledBoxMenuItem
-              isActive={router.pathname.includes('/users')}
-              onClick={() => router.push('/users?page=1')}
-            >
-              <StyledBoxIcon isActive={router.pathname.includes('/users')}>
-                <FontAwesomeIcon icon={faUser} />
-              </StyledBoxIcon>
-              <StyledPNavItem isActive={router.pathname.includes('/users')}>
-                Users
-              </StyledPNavItem>
-            </StyledBoxMenuItem>
-          </li>
+          {auth?.user_logged?.role?.role_name !== 'client' && (
+            <li>
+              <StyledBoxMenuItem
+                isActive={router.pathname.includes('/users')}
+                onClick={() => router.push('/users?page=1')}
+              >
+                <StyledBoxIcon isActive={router.pathname.includes('/users')}>
+                  <FontAwesomeIcon icon={faUser} />
+                </StyledBoxIcon>
+                <StyledPNavItem isActive={router.pathname.includes('/users')}>
+                  Users
+                </StyledPNavItem>
+              </StyledBoxMenuItem>
+            </li>
+          )}
         </StyledListMenu>
       </nav>
       <StyledBoxUser>

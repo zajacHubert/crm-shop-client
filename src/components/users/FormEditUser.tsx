@@ -44,7 +44,6 @@ const FormEditUser: FC = () => {
 
   const submitForm = async (values: FormEditUserValues) => {
     const res = await editUser({ ...values, id });
-    console.log(res);
     if ('error' in res) {
       displaySnackBar(dispatch, false, 'Edit user failed');
     }

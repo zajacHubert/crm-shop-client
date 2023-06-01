@@ -32,6 +32,9 @@ const FormAddUser: FC = () => {
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen
   );
+  const loggedUser = useSelector(
+    (state: RootState) => state.user.auth?.user_logged
+  );
 
   const validationSchema = yup.object().shape({
     name: yup.string().required().min(4).max(50),
@@ -133,11 +136,21 @@ const FormAddUser: FC = () => {
                   onChange={handleChange}
                 >
                   <option value=''>Choose role</option>
-                  {roles?.map((role) => (
-                    <option key={role?.id} value={role?.id}>
-                      {role.role_name}
-                    </option>
-                  ))}
+
+                  {roles?.map((role) => {
+                    if (
+                      loggedUser?.role.role_name !== 'admin' &&
+                      role.role_name === 'admin'
+                    ) {
+                      return null;
+                    } else {
+                      return (
+                        <option key={role?.id} value={role?.id}>
+                          {role.role_name}
+                        </option>
+                      );
+                    }
+                  })}
                 </StyledSelectRoles>
                 <StyledBtnSubmit type='submit'>Add User</StyledBtnSubmit>
               </StyledForm>

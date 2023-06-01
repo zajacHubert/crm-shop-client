@@ -106,6 +106,10 @@ const ProductsPage: NextPage = () => {
     dispatch(addProductToOrder(product));
   };
 
+  const loggedUser = useSelector(
+    (state: RootState) => state.user.auth?.user_logged
+  );
+
   if (isLoading || isFetching) {
     return (
       <Layout>
@@ -184,16 +188,22 @@ const ProductsPage: NextPage = () => {
                       >
                         <FontAwesomeIcon icon={faEye} />
                       </StyledBtnIcon>
-                      <StyledBtnIcon
-                        onClick={() =>
-                          router.push(`/products/${product.id}/edit`)
-                        }
-                      >
-                        <FontAwesomeIcon icon={faPen} />
-                      </StyledBtnIcon>
-                      <StyledBtnIcon onClick={() => removeProduct(product.id)}>
-                        <FontAwesomeIcon icon={faTrash} />
-                      </StyledBtnIcon>
+                      {loggedUser?.role.role_name !== 'client' && (
+                        <>
+                          <StyledBtnIcon
+                            onClick={() =>
+                              router.push(`/products/${product.id}/edit`)
+                            }
+                          >
+                            <FontAwesomeIcon icon={faPen} />
+                          </StyledBtnIcon>
+                          <StyledBtnIcon
+                            onClick={() => removeProduct(product.id)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </StyledBtnIcon>
+                        </>
+                      )}
                       <StyledBtnBuy onClick={() => addProduct(product)}>
                         Buy
                       </StyledBtnBuy>

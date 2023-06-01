@@ -56,7 +56,6 @@ const FormLogin: FC = () => {
       dispatch(setAuth(res.data));
       router.push('/home');
     }
-    console.log(res);
   };
 
   return (
