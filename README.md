@@ -1,6 +1,6 @@
 # CRM Shop Client
 
-# Live preview with frontend
+# Live preview
 ## https://crm-shop-client-rf6tnef2z-zajachubert.vercel.app/
 
 ## Backend REST Api hosted on MyDevil Server 
