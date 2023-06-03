@@ -18,6 +18,7 @@
   - password: client123
 
 ## To test all the functionalities of the application, it is recommended to log in as admin
+# Of course new can register new account, but this way you automatically create client role
 
 ## Limitations for specific role:
 - admin:
