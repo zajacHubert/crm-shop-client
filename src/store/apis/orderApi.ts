@@ -11,7 +11,7 @@ import {
 export const ordersApi = createApi({
   reducerPath: 'apiOrders',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_API}/orders`,
+    baseUrl: `${process.env.NEXT_PUBLIC_API}`,
   }),
   tagTypes: ['Order'],
   endpoints(builder) {
@@ -23,7 +23,7 @@ export const ordersApi = createApi({
         query: (arg) => {
           const { page, sort_param, direction } = arg;
           return {
-            url: '/',
+            url: '/orders',
             params: { page, sort_param, direction },
           };
         },
@@ -45,7 +45,7 @@ export const ordersApi = createApi({
       }),
       addOrder: builder.mutation<PostOrderResponse, OrderToAdd>({
         query: (formAddProductValues) => ({
-          url: '/',
+          url: '/orders',
           method: 'POST',
           body: formAddProductValues,
         }),
@@ -55,7 +55,7 @@ export const ordersApi = createApi({
       }),
       deleteOrder: builder.mutation<DeleteOrderResponse, string>({
         query: (id) => ({
-          url: `/${id}`,
+          url: `/orders/${id}`,
           method: 'DELETE',
         }),
         invalidatesTags: (result) => {
