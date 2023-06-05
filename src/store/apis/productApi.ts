@@ -9,7 +9,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const productsApi = createApi({
   reducerPath: 'apiProducts',
   baseQuery: fetchBaseQuery({
-    baseUrl: `${process.env.NEXT_PUBLIC_API}/products`,
+    baseUrl: `${process.env.NEXT_PUBLIC_API}`,
   }),
   tagTypes: ['Product'],
   endpoints(builder) {
@@ -21,7 +21,7 @@ export const productsApi = createApi({
         query: (arg) => {
           const { page, product_category } = arg;
           return {
-            url: '/',
+            url: '/products',
             params: { page, product_category },
           };
         },
@@ -36,14 +36,14 @@ export const productsApi = createApi({
             : [{ type: 'Product', id: 'LIST' }],
       }),
       fetchProduct: builder.query<Product, string>({
-        query: (id) => `/${id}`,
+        query: (id) => `products/${id}`,
         providesTags: (result) => {
           return [{ type: 'Product', id: result?.id }];
         },
       }),
       addProduct: builder.mutation<Product, FormAddProductValues>({
         query: (formAddProductValues) => ({
-          url: '/',
+          url: '/products',
           method: 'POST',
           body: formAddProductValues,
         }),
@@ -53,7 +53,7 @@ export const productsApi = createApi({
       }),
       editProduct: builder.mutation<Product, FormEditProductValues>({
         query: ({ id, ...formEditProductValues }) => ({
-          url: `/${id}`,
+          url: `/products/${id}`,
           method: 'PUT',
           body: formEditProductValues,
         }),
@@ -63,7 +63,7 @@ export const productsApi = createApi({
       }),
       deleteProduct: builder.mutation<DeleteProductResponse, string>({
         query: (id) => ({
-          url: `/${id}`,
+          url: `/products/${id}`,
           method: 'DELETE',
         }),
         invalidatesTags: (result) => {
