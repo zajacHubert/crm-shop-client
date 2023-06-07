@@ -75,7 +75,19 @@ const ProductsPage: NextPage = () => {
     if (!isLoading || isSuccess) {
       if (sortParam) {
         const way = wayParam === 'asc' ? 'asc' : 'desc';
-        setSortedProducts(_.orderBy(products?.data!, [String(sortParam)], way));
+        if (sortParam === 'product_name') {
+          setSortedProducts(
+            _.orderBy(
+              products?.data!,
+              [(product) => product.product_name.toLowerCase()],
+              way
+            )
+          );
+        } else {
+          setSortedProducts(
+            _.orderBy(products?.data!, [String(sortParam)], way)
+          );
+        }
       } else {
         setSortedProducts(products?.data!);
       }
@@ -88,11 +100,9 @@ const ProductsPage: NextPage = () => {
     if (value) {
       router.query.product_category = value;
       router.push(router);
-      refetch();
     } else {
       delete router.query.product_category;
       router.push(router);
-      refetch();
     }
   };
 
@@ -109,6 +119,10 @@ const ProductsPage: NextPage = () => {
   const loggedUser = useSelector(
     (state: RootState) => state.user.auth?.user_logged
   );
+
+  useEffect(() => {
+    refetch();
+  }, [products]);
 
   if (isLoading || isFetching) {
     return (

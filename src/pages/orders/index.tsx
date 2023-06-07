@@ -47,15 +47,20 @@ const OrdersPage: NextPage = () => {
   const pageParam = Number(router.query.page);
   const sortParam = router.query.sort_param as string;
   const directionParam = router.query.direction as string;
+  const loggedUser = useSelector(
+    (state: RootState) => state.user.auth?.user_logged
+  );
 
   const {
     data: orders,
     isLoading,
     isFetching,
+    refetch,
   } = useFetchOrdersQuery({
     page: pageParam,
     sort_param: sortParam ?? '',
     direction: directionParam ?? '',
+    user_id: loggedUser?.role.role_name !== 'client' ? '' : loggedUser.id,
   });
   const [deleteFunction] = useDeleteOrderMutation();
 
@@ -70,9 +75,9 @@ const OrdersPage: NextPage = () => {
     router.push(router);
   };
 
-  const loggedUser = useSelector(
-    (state: RootState) => state.user.auth?.user_logged
-  );
+  useEffect(() => {
+    refetch();
+  }, [orders]);
 
   if (isLoading || isFetching) {
     return (
@@ -81,6 +86,11 @@ const OrdersPage: NextPage = () => {
       </Layout>
     );
   }
+
+  const recordsAmount =
+    loggedUser?.role.role_name !== 'client'
+      ? orders?.total!
+      : orders?.data.filter((order) => order.user_id === loggedUser.id).length;
 
   return (
     <>
@@ -185,7 +195,7 @@ const OrdersPage: NextPage = () => {
                   ))}
           </StyledTbody>
         </StyledTable>
-        <Pagination listLength={orders?.total!}></Pagination>
+        <Pagination listLength={recordsAmount!}></Pagination>
       </Layout>
     </>
   );

@@ -54,6 +54,7 @@ const UsersPage = () => {
     isLoading,
     isSuccess,
     isFetching,
+    refetch,
   } = useFetchUsersQuery({ page: pageParam });
 
   useEffect(() => {
@@ -72,6 +73,10 @@ const UsersPage = () => {
     dispatch(setId(id));
     dispatch(openPopup());
   };
+
+  useEffect(() => {
+    refetch();
+  }, [users]);
 
   if (isLoading || isFetching) {
     return (
