@@ -2,7 +2,10 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { useAddProductMutation } from '@/store/apis/productApi';
+import {
+  useAddProductMutation,
+  useFetchProductsQuery,
+} from '@/store/apis/productApi';
 import { displaySnackBar } from '@/utils/displaySnackBar';
 import { Formik } from 'formik';
 import * as yup from 'yup';
