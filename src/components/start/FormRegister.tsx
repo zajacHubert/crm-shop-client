@@ -15,6 +15,7 @@ import {
   StyledPErrorRegister,
   StyledPLogin,
   StyledSpanLink,
+  StyledTitleForm,
 } from './FormRegister.css';
 import {
   StyledBoxLabelError,
@@ -74,6 +75,7 @@ const FormRegister: FC = () => {
 
   return (
     <StyledBoxForm>
+      <StyledTitleForm>Register</StyledTitleForm>
       <Formik
         initialValues={initialValues}
         validationSchema={validationSchema}
