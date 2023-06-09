@@ -38,8 +38,19 @@ const FormEditProduct: FC = () => {
   const [initialValues, setInitialValues] = useState<FormEditProductValues>({});
 
   const validationSchema = yup.object().shape({
-    product_name: yup.string().required().min(4).max(50),
-    product_desc: yup.string().required().min(4).max(200),
+    product_name: yup
+      .string()
+      .required('Product name is required')
+      .min(4, 'Product name should be at leat 4 characters')
+      .max(50, 'Product name should not exceed 50 characters '),
+    product_desc: yup
+      .string()
+      .required('Product description is required')
+      .min(4, 'Product description should be between 4 and 200 characters')
+      .max(
+        200,
+        'Description should be at least 10 characters and cannot exceed 200 characters'
+      ),
     product_category: yup
       .string()
       .required()

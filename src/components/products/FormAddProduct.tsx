@@ -2,13 +2,10 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { RootState } from '@/store';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  useAddProductMutation,
-  useFetchProductsQuery,
-} from '@/store/apis/productApi';
-import { displaySnackBar } from '@/utils/displaySnackBar';
+import { useAddProductMutation } from '@/store/apis/productApi';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { displaySnackBar } from '@/utils/displaySnackBar';
 
 import { FormAddProductValues } from '@/types/forms';
 import Snackbar from '../_shared/ui/Snackbar';
@@ -35,8 +32,19 @@ const FormAddProduct: FC = () => {
   );
 
   const validationSchema = yup.object().shape({
-    product_name: yup.string().required().min(4).max(50),
-    product_desc: yup.string().required().min(4).max(200),
+    product_name: yup
+      .string()
+      .required('Product name is required')
+      .min(4, 'Product name should be at leat 4 characters')
+      .max(50, 'Product name should not exceed 50 characters '),
+    product_desc: yup
+      .string()
+      .required('Product description is required')
+      .min(4, 'Product description should be between 4 and 200 characters')
+      .max(
+        200,
+        'Description should be at least 10 characters and cannot exceed 200 characters'
+      ),
     product_category: yup
       .string()
       .required()

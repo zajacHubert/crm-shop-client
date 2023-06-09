@@ -1,5 +1,6 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import {
@@ -15,6 +16,7 @@ import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons';
 import Pagination from '@/components/_shared/ui/Pagination';
 import PopupConfirmDelete from '@/components/_shared/ui/PopupConfirmDelete';
 import Layout from '@/components/_shared/navigation/Layout';
+import Spinner from '@/components/_shared/ui/Spinner';
 import {
   StyledBoxBtns,
   StyledBtnIcon,
@@ -26,15 +28,12 @@ import {
   StyledThead,
   StyledTr,
 } from '@/components/_shared/ui/Table.css';
-
 import {
   StyledBtn,
   StyledRow,
   StyledSelectSort,
   StyledText,
 } from '@/components/orders/RowOrderList.css';
-import { ChangeEvent, useEffect, useState } from 'react';
-import Spinner from '@/components/_shared/ui/Spinner';
 
 const OrdersPage: NextPage = () => {
   const router = useRouter();
@@ -87,11 +86,6 @@ const OrdersPage: NextPage = () => {
     );
   }
 
-  const recordsAmount =
-    loggedUser?.role.role_name !== 'client'
-      ? orders?.total!
-      : orders?.data.filter((order) => order.user_id === loggedUser.id).length;
-
   return (
     <>
       {isPopupOpen && <PopupConfirmDelete deleteFunction={deleteFunction} />}
@@ -129,73 +123,37 @@ const OrdersPage: NextPage = () => {
             </StyledTr>
           </StyledThead>
           <StyledTbody>
-            {loggedUser?.role.role_name !== 'client'
-              ? !orders?.data.length &&
-                !isLoading && (
-                  <StyledTr>
-                    <StyledTdEmpty>No orders</StyledTdEmpty>
-                  </StyledTr>
-                )
-              : !orders?.data.filter((order) => order.user_id === loggedUser.id)
-                  .length &&
-                !isLoading && (
-                  <StyledTr>
-                    <StyledTdEmpty>No orders</StyledTdEmpty>
-                  </StyledTr>
-                )}
-            {loggedUser?.role.role_name !== 'client'
-              ? Boolean(orders?.data.length && !isLoading) &&
-                orders?.data.map((order, i) => (
-                  <StyledTr key={order.id}>
-                    <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
-                    <StyledTd>{formatDate(order.created_at)}</StyledTd>
-                    <StyledTd>{order.user.name}</StyledTd>
-                    <StyledTd>{countOrderValue(order.products!)}</StyledTd>
-                    <StyledTd>
-                      <StyledBoxBtns>
-                        <StyledBtnIcon
-                          onClick={() => router.push(`/orders/${order.id}`)}
-                        >
-                          <FontAwesomeIcon icon={faEye} />
+            {!orders?.data.length && !isLoading && (
+              <StyledTr>
+                <StyledTdEmpty>No orders</StyledTdEmpty>
+              </StyledTr>
+            )}
+            {Boolean(orders?.data.length && !isLoading) &&
+              orders?.data.map((order, i) => (
+                <StyledTr key={order.id}>
+                  <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
+                  <StyledTd>{formatDate(order.created_at)}</StyledTd>
+                  <StyledTd>{order.user.name}</StyledTd>
+                  <StyledTd>{countOrderValue(order.products!)}</StyledTd>
+                  <StyledTd>
+                    <StyledBoxBtns>
+                      <StyledBtnIcon
+                        onClick={() => router.push(`/orders/${order.id}`)}
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                      </StyledBtnIcon>
+                      {loggedUser?.role.role_name !== 'client' && (
+                        <StyledBtnIcon onClick={() => removeOrder(order.id)}>
+                          <FontAwesomeIcon icon={faTrash} />
                         </StyledBtnIcon>
-                        {loggedUser?.role.role_name !== 'client' && (
-                          <StyledBtnIcon onClick={() => removeOrder(order.id)}>
-                            <FontAwesomeIcon icon={faTrash} />
-                          </StyledBtnIcon>
-                        )}
-                      </StyledBoxBtns>
-                    </StyledTd>
-                  </StyledTr>
-                ))
-              : orders?.data
-                  .filter((order) => order.user_id === loggedUser.id)
-                  .map((order, i) => (
-                    <StyledTr key={order.id}>
-                      <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
-                      <StyledTd>{formatDate(order.created_at)}</StyledTd>
-                      <StyledTd>{order.user.name}</StyledTd>
-                      <StyledTd>{countOrderValue(order.products!)}</StyledTd>
-                      <StyledTd>
-                        <StyledBoxBtns>
-                          <StyledBtnIcon
-                            onClick={() => router.push(`/orders/${order.id}`)}
-                          >
-                            <FontAwesomeIcon icon={faEye} />
-                          </StyledBtnIcon>
-                          {loggedUser?.role.role_name !== 'client' && (
-                            <StyledBtnIcon
-                              onClick={() => removeOrder(order.id)}
-                            >
-                              <FontAwesomeIcon icon={faTrash} />
-                            </StyledBtnIcon>
-                          )}
-                        </StyledBoxBtns>
-                      </StyledTd>
-                    </StyledTr>
-                  ))}
+                      )}
+                    </StyledBoxBtns>
+                  </StyledTd>
+                </StyledTr>
+              ))}
           </StyledTbody>
         </StyledTable>
-        <Pagination listLength={recordsAmount!}></Pagination>
+        <Pagination listLength={orders?.total ?? 1}></Pagination>
       </Layout>
     </>
   );

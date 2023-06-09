@@ -8,7 +8,6 @@ import { setAuth } from '@/store/slices/userSlice';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import Spinner from '../_shared/ui/Spinner';
 import {
   StyledBoxError,
   StyledBoxForm,
@@ -30,9 +29,8 @@ import { UserRegisterError } from '@/types/user';
 const FormRegister: FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [register, { error, isLoading: isRegisterLoading }] =
-    useRegisterMutation();
-  const [login, { isLoading: isLoginLoading }] = useLoginMutation();
+  const [register, { error }] = useRegisterMutation();
+  const [login] = useLoginMutation();
   const [errRegister, setErrRegister] = useState<UserRegisterError>(
     {} as UserRegisterError
   );

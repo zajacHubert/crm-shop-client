@@ -39,7 +39,7 @@ const FormEditUser: FC = () => {
   const validationSchema = yup.object().shape({
     name: yup.string().required().min(4).max(50),
     email: yup.string().email().min(4).max(50),
-    role_id: yup.string().required(),
+    role_id: yup.string().required('Role is required'),
   });
 
   const submitForm = async (values: FormEditUserValues) => {
@@ -66,7 +66,6 @@ const FormEditUser: FC = () => {
   return (
     <>
       {isSnackBarOpen && <Snackbar />}
-
       <StyledBoxForm>
         <StyledTitleForm>Edit user</StyledTitleForm>
         <Formik

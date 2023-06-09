@@ -40,7 +40,7 @@ const FormAddUser: FC = () => {
     name: yup.string().required().min(4).max(50),
     email: yup.string().required().email().min(4).max(50),
     password: yup.string().required().min(4).max(50),
-    role_id: yup.string().required(),
+    role_id: yup.string().required('role is required'),
   });
 
   const initialValues: FormAddUserValues = {

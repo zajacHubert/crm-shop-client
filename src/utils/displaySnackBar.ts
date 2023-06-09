@@ -1,5 +1,4 @@
 import {
-  closeSnackbar,
   openSnackBar,
   setMessage,
   setSuccess,
@@ -11,7 +10,6 @@ export const displaySnackBar = (
   isSuccess: boolean,
   message: string
 ) => {
-  //   dispatch(closeSnackbar());
   dispatch(setSuccess(isSuccess));
   dispatch(setMessage(message));
   dispatch(openSnackBar());
