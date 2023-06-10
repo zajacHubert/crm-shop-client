@@ -17,23 +17,23 @@
   - email: client@client
   - password: client123
 
-## To test all the functionalities of the application, it is recommended to log in as admin
-### Of course you can register new account using register form, but this way you automatically create client role
+## To test all the functionalities of the application, it is recommended to log in as an admin
+### Of course you can register a new account using the register form, but this way you automatically create an account with client role
 
-## Limitations for specific role:
+## Role limitations:
 - admin:
   - no limitations
 - employee:
   - adding new users with admin roles
-  - change users passwords
+  - changing user's passwords
 - client:
-  - checking list of users, editing and removing them
-  - checking list of another users orders, editing and removing them
+  - checking, editing, and removing users from list
+  - checking, editing, and removing other user's orders
   - removing and editing own orders
-  - removing, adding and editing products
+  - removing, adding, and editing products
 
 ## Description:
-This CRUD frontend app, built with Next.js and TypeScript, provides a user-friendly interface for managing data through the CRUD operations. The app is designed to simplify the process of interacting with a backend API and offers a service of three modules: users, products and orders. The application has been prepared in such a way as to fetch data effectively in a very efficient way. The structure of the application is organized and allows it to be easily expanded and edited.
+This CRUD frontend app, built with Next.js and TypeScript, provides a user-friendly interface for managing data through the CRUD operations. The app is designed to simplify the process of interacting with a backend API and offers a service of three modules: users, products, and orders. The application has been prepared in such a way as to fetch data efficiently and effectively. The structure of the application is organized and easily expanded and edited.
 
 ## Libraries:
 - redux toolkit query
