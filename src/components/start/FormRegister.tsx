@@ -7,6 +7,7 @@ import { useLoginMutation, useRegisterMutation } from '@/store/apis/userApi';
 import { setAuth } from '@/store/slices/userSlice';
 import { Formik } from 'formik';
 import * as yup from 'yup';
+import { UserRegisterError } from '@/types/user';
 
 import {
   StyledBoxError,
@@ -24,7 +25,6 @@ import {
   StyledLabel,
   StyledPError,
 } from '../_shared/ui/Form.css';
-import { UserRegisterError } from '@/types/user';
 
 const FormRegister: FC = () => {
   const router = useRouter();

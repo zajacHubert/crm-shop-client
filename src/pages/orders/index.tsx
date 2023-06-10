@@ -8,7 +8,7 @@ import {
   useFetchOrdersQuery,
 } from '@/store/apis/orderApi';
 import { formatDate } from '@/utils/formatDate';
-import { countOrderValue } from '@/utils/counteOrderValue';
+import { countOrderValue } from '@/utils/countOrderValue';
 import { openPopup, setId } from '@/store/slices/popupSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEye } from '@fortawesome/free-solid-svg-icons';

@@ -7,6 +7,7 @@ import { useLoginMutation } from '@/store/apis/userApi';
 import { useDispatch } from 'react-redux';
 import { setAuth } from '@/store/slices/userSlice';
 import * as yup from 'yup';
+import { UserLoginError } from '@/types/user';
 
 import {
   StyledBoxError,
@@ -24,7 +25,6 @@ import {
   StyledLabel,
   StyledPError,
 } from '../_shared/ui/Form.css';
-import { UserLoginError } from '@/types/user';
 
 const FormLogin: FC = () => {
   const router = useRouter();

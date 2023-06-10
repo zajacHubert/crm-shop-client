@@ -20,12 +20,15 @@ export const usersApi = createApi({
   tagTypes: ['User'],
   endpoints(builder) {
     return {
-      fetchUsers: builder.query<GetUsersResponse, { page: number }>({
+      fetchUsers: builder.query<
+        GetUsersResponse,
+        { page: number; sort_param?: string; direction?: string }
+      >({
         query: (arg) => {
-          const { page } = arg;
+          const { page, sort_param, direction } = arg;
           return {
             url: '/users',
-            params: { page },
+            params: { page, sort_param, direction },
           };
         },
         providesTags: (result) =>

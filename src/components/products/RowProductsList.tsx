@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import { countOrderValue } from '@/utils/counteOrderValue';
+import { countOrderValue } from '@/utils/countOrderValue';
 
 import {
   StyledBoxText,

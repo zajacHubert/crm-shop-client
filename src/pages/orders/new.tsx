@@ -2,12 +2,9 @@ import { NextPage } from 'next';
 import { useRouter } from 'next/router';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
-import {
-  useAddOrderMutation,
-  useFetchOrdersQuery,
-} from '@/store/apis/orderApi';
+import { useAddOrderMutation } from '@/store/apis/orderApi';
 import { clearOrder, removeProductFromOrder } from '@/store/slices/orderSlice';
-import { countOrderValue } from '@/utils/counteOrderValue';
+import { countOrderValue } from '@/utils/countOrderValue';
 import { displaySnackBar } from '@/utils/displaySnackBar';
 import { Product } from '@/types/product';
 

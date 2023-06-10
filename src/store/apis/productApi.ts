@@ -16,13 +16,18 @@ export const productsApi = createApi({
     return {
       fetchProducts: builder.query<
         GetProductsResponse,
-        { page: number; product_category?: string }
+        {
+          page: number;
+          product_category?: string;
+          sort_param?: string;
+          direction?: string;
+        }
       >({
         query: (arg) => {
-          const { page, product_category } = arg;
+          const { page, product_category, sort_param, direction } = arg;
           return {
             url: '/products',
-            params: { page, product_category },
+            params: { page, product_category, sort_param, direction },
           };
         },
         providesTags: (result) =>

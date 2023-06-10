@@ -8,8 +8,8 @@ import * as yup from 'yup';
 import { useFetchRolesQuery } from '@/store/apis/roleApi';
 import { displaySnackBar } from '@/utils/displaySnackBar';
 import Snackbar from '../_shared/ui/Snackbar';
-
 import { FormAddUserValues } from '@/types/forms';
+
 import {
   StyledBoxForm,
   StyledSelectRoles,
@@ -27,7 +27,7 @@ import {
 const FormAddUser: FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [addUser, { error }] = useRegisterMutation();
+  const [addUser] = useRegisterMutation();
   const { data: roles } = useFetchRolesQuery();
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen

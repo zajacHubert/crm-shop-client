@@ -21,7 +21,7 @@ interface LayoutProps {
 const Layout: FC<LayoutProps> = ({ title, description, children }) => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const [refreshAuth, {}] = useRefreshAuthMutation();
+  const [refreshAuth] = useRefreshAuthMutation();
   const auth = useSelector((state: RootState) => state.user?.auth!);
   const cookieJwt = getCookie('jwt');
 

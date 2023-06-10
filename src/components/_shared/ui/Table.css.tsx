@@ -62,7 +62,7 @@ export const StyledBtnArrow = styled.button<StyledBtnArrowInterface>`
   height: 15px;
   margin-left: 5px;
   color: ${({ color }) => color};
-  transform: ${({ wayUp }) => (wayUp ? 'rotate(180deg)' : '')};
+  transform: ${({ wayUp }) => (wayUp ? 'rotate(180deg)' : '')} scale(1.2);
 `;
 
 export const StyledTdEmpty = styled.td.attrs(() => ({

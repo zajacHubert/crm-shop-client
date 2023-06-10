@@ -1,7 +1,12 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '@/store';
+import { useLogoutMutation } from '@/store/apis/userApi';
+import { logout } from '@/store/slices/userSlice';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import {
   faChartSimple,
   faCartShopping,
@@ -20,10 +25,6 @@ import {
   StyledPNavItem,
   StyledTitleLogo,
 } from './Sidebar.css';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/store';
-import { useLogoutMutation } from '@/store/apis/userApi';
-import { logout } from '@/store/slices/userSlice';
 
 const Sidebar: FC = () => {
   const router = useRouter();

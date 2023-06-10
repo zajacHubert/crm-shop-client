@@ -4,7 +4,6 @@ import { useEffect, useState, ChangeEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/store';
 import { openPopup, setId } from '@/store/slices/popupSlice';
-import { updateSortParams } from '@/utils/updateSortParams';
 import {
   useDeleteProductMutation,
   useFetchProductsQuery,
@@ -49,50 +48,28 @@ const ProductsPage: NextPage = () => {
   const isSnackBarOpen = useSelector(
     (state: RootState) => state.snackbar.isOpen
   );
-  const [deleteFunction, {}] = useDeleteProductMutation();
+  const [deleteFunction] = useDeleteProductMutation();
 
-  const sortParam = router.query.sort;
+  const sortParam = router.query.sort_param as string;
   const pageParam = Number(router.query.page);
-  const searchParam = router.query.search as string;
   const categoryParam = router.query.product_category as string;
-  const wayParam: string = router.query.way ? String(router.query.way) : '';
+  const directionParam = router.query.direction as string;
 
   const [category, setCategory] = useState<string>(categoryParam ?? '');
-  const [sortedProducts, setSortedProducts] = useState<Product[]>([]);
+  const [sortValue, setSortValue] = useState<string>('');
+  const [sortDirection, setSortDirection] = useState<string>('');
 
   const {
     data: products,
     isLoading,
-    isSuccess,
     isFetching,
     refetch,
   } = useFetchProductsQuery({
     page: pageParam,
     product_category: categoryParam ?? '',
+    sort_param: sortParam ?? '',
+    direction: directionParam ?? '',
   });
-
-  useEffect(() => {
-    if (!isLoading || isSuccess) {
-      if (sortParam) {
-        const way = wayParam === 'asc' ? 'asc' : 'desc';
-        if (sortParam === 'product_name') {
-          setSortedProducts(
-            _.orderBy(
-              products?.data!,
-              [(product) => product.product_name.toLowerCase()],
-              way
-            )
-          );
-        } else {
-          setSortedProducts(
-            _.orderBy(products?.data!, [String(sortParam)], way)
-          );
-        }
-      } else {
-        setSortedProducts(products?.data!);
-      }
-    }
-  }, [isLoading, isSuccess, sortParam, wayParam, searchParam, products?.data!]);
 
   const chooseCategory = (value: string) => {
     setCategory(value);
@@ -121,6 +98,18 @@ const ProductsPage: NextPage = () => {
   );
 
   useEffect(() => {
+    router.query.sort_param = sortValue;
+    router.query.direction = sortDirection;
+    if (!router.query.sort_param) {
+      delete router.query.sort_param;
+    }
+    if (!router.query.direction) {
+      delete router.query.direction;
+    }
+    router.push(router);
+  }, [sortValue, sortDirection]);
+
+  useEffect(() => {
     refetch();
   }, [products]);
 
@@ -146,35 +135,42 @@ const ProductsPage: NextPage = () => {
               <StyledTh>
                 Product name
                 <StyledBtnArrow
-                  color={sortParam === 'product_name' ? '#fff' : '#aaa'}
-                  wayUp={sortParam === 'product_name' && wayParam === 'asc'}
-                  onClick={() =>
-                    updateSortParams(router, 'product_name', wayParam)
+                  color={sortValue === 'product_name' ? '#fff' : '#aaa'}
+                  wayUp={
+                    sortValue === 'product_name' && sortDirection === 'asc'
                   }
+                  onClick={() => {
+                    setSortValue('product_name');
+                    setSortDirection(
+                      `${
+                        sortValue === 'product_name' && sortDirection === 'asc'
+                          ? 'desc'
+                          : 'asc'
+                      }`
+                    );
+                  }}
                 >
                   <FontAwesomeIcon icon={faArrowDown} />
                 </StyledBtnArrow>
               </StyledTh>
-              <StyledTh>
-                Category
-                <StyledBtnArrow
-                  color={sortParam === 'product_category' ? '#fff' : '#aaa'}
-                  wayUp={sortParam === 'product_category' && wayParam === 'asc'}
-                  onClick={() =>
-                    updateSortParams(router, 'product_category', wayParam)
-                  }
-                >
-                  <FontAwesomeIcon icon={faArrowDown} />
-                </StyledBtnArrow>
-              </StyledTh>
+              <StyledTh>Category</StyledTh>
               <StyledTh>
                 Price
                 <StyledBtnArrow
-                  color={sortParam === 'product_price' ? '#fff' : '#aaa'}
-                  wayUp={sortParam === 'product_price' && wayParam === 'asc'}
-                  onClick={() =>
-                    updateSortParams(router, 'product_price', wayParam)
+                  color={sortValue === 'product_price' ? '#fff' : '#aaa'}
+                  wayUp={
+                    sortValue === 'product_price' && sortDirection === 'asc'
                   }
+                  onClick={() => {
+                    setSortValue('product_price');
+                    setSortDirection(
+                      `${
+                        sortValue === 'product_price' && sortDirection === 'asc'
+                          ? 'desc'
+                          : 'asc'
+                      }`
+                    );
+                  }}
                 >
                   <FontAwesomeIcon icon={faArrowDown} />
                 </StyledBtnArrow>
@@ -183,13 +179,13 @@ const ProductsPage: NextPage = () => {
             </StyledTr>
           </StyledThead>
           <StyledTbody>
-            {!sortedProducts.length && !isLoading && (
+            {!products?.data.length && !isLoading && (
               <StyledTr>
                 <StyledTdEmpty>No products</StyledTdEmpty>
               </StyledTr>
             )}
-            {Boolean(sortedProducts.length && !isLoading) &&
-              sortedProducts?.map((product, i) => (
+            {Boolean(products?.data.length && !isLoading) &&
+              products?.data?.map((product, i) => (
                 <StyledTr key={product.id}>
                   <StyledTd>{i + 1 + (pageParam - 1) * 10}</StyledTd>
                   <StyledTd>{product.product_name}</StyledTd>
