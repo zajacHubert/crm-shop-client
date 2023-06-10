@@ -33,7 +33,7 @@
   - removing, adding, and editing products
 
 ## Description:
-This CRUD frontend app, built with Next.js and TypeScript, provides a user-friendly interface for managing data through the CRUD operations. The app is designed to simplify the process of interacting with a backend API and offers a service of three modules: users, products, and orders. The application has been prepared in such a way as to fetch data effectively and effectively. The structure of the application is organized and easily expanded and edited.
+This CRUD frontend app, built with Next.js and TypeScript, provides a user-friendly interface for managing data through the CRUD operations. The app is designed to simplify the process of interacting with a backend API and offers a service of three modules: users, products, and orders. The application has been prepared in such a way as to fetch data efficiently and effectively. The structure of the application is organized and easily expanded and edited.
 
 ## Libraries:
 - redux toolkit query
